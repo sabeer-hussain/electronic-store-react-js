@@ -1,5 +1,11 @@
+import Base from "../components/Base";
+
 function Cart() {
-  return <div>This is Cart page</div>;
+  return (
+    <Base>
+      <div>This is Cart page</div>
+    </Base>
+  );
 }
 
 export default Cart;
