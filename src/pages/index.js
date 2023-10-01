@@ -1,6 +1,7 @@
 import { Button } from "react-bootstrap";
 import Base from "../components/Base";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 function Index() {
   const showSuccessToast = () => {
@@ -13,6 +14,21 @@ function Index() {
 
     toast.error("This is error message !!");
     toast.warning("This is warning message !!");
+  };
+
+  const getDataFromServer = () => {
+    toast.info("Getting data from server");
+    axios
+    // .get("https://jsonplaceholder.typicode.com/posts")
+    .get("http://localhost:9090/users")
+    .then((response) => {
+      console.log(response.data);
+      toast.success("request done");
+    })
+    .catch((error)=>{
+      console.log(error);
+      toast.error("something went wrong")
+    });
   };
 
   return (
@@ -36,6 +52,9 @@ function Index() {
       </p>
       <Button variant="success" onClick={showSuccessToast}>
         Toastify Success
+      </Button>
+      <Button variant="primary" onClick={getDataFromServer}>
+        Get data from Fake API
       </Button>
     </Base>
   );
