@@ -18,9 +18,11 @@ function Index() {
 
   const getDataFromServer = () => {
     toast.info("Getting data from server");
+    const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtc2FiZWVyaHVzc2FpbjAwN0BnbWFpbC5jb20iLCJpYXQiOjE2OTYxNTA0MjAsImV4cCI6MTY5NjE2ODQyMH0.njlyU26NNyzhnuMpo_KQVGiTRD22H18cftm4oGN4uMgtIyR-K9EwvHqEbMfWJco33KqMcLyRFqHl1ITcdabuyQ";
+    const header = `Authorization: Bearer ${token}`;
     axios
     // .get("https://jsonplaceholder.typicode.com/posts")
-    .get("http://localhost:9090/users")
+    .get("http://localhost:9090/users", {headers: header})
     .then((response) => {
       console.log(response.data);
       toast.success("request done");
