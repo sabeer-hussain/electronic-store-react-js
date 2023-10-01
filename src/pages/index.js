@@ -1,6 +1,20 @@
+import { Button } from "react-bootstrap";
 import Base from "../components/Base";
+import { toast } from "react-toastify";
 
 function Index() {
+  const showSuccessToast = () => {
+    // toast("Success");
+    toast.success("This is success message !!");
+    // toast.success("This is success message !!", {
+    //   position: "bottom-center",
+    //   theme: "dark",
+    // });
+
+    toast.error("This is error message !!");
+    toast.warning("This is warning message !!");
+  };
+
   return (
     <Base
       title="Shop what you need"
@@ -20,6 +34,9 @@ function Index() {
         voluptas quis repudiandae recusandae! Cum quisquam vero, quasi deleniti
         provident ea totam pariatur odit.
       </p>
+      <Button variant="success" onClick={showSuccessToast}>
+        Toastify Success
+      </Button>
     </Base>
   );
 }

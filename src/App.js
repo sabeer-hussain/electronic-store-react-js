@@ -10,12 +10,20 @@ import Profile from "./pages/users/profile";
 import AboutUser from "./pages/users/about-user";
 import CustomNavbar from "./components/Navbar";
 import Contact from "./pages/contact";
+import { Flip, ToastContainer, Zoom } from "react-toastify";
 
 function App() {
   return (
     // setting up routes
 
     <BrowserRouter>
+      <ToastContainer
+        position="bottom-center"
+        theme="dark"
+        draggable
+        // transition={Zoom}
+        // transition={Flip}
+      />
       <CustomNavbar />
       <Routes>
         <Route path="/" element={<Index />} />
