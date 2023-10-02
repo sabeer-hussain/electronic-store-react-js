@@ -12,6 +12,7 @@ import logo from "../assets/logo.png";
 import { useState } from "react";
 import { registerUser } from "../services/user.service";
 import { toast } from "react-toastify";
+import { NavLink } from "react-router-dom";
 
 const Register = () => {
   const [data, setData] = useState({
@@ -243,7 +244,7 @@ const Register = () => {
                   <Container>
                     <p className="text-center">
                       Already register ! <span> </span>
-                      <a href="#">Login</a>
+                      <NavLink to="/login">Login</NavLink>
                     </p>
                   </Container>
 
