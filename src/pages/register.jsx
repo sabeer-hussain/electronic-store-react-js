@@ -37,9 +37,14 @@ const Register = () => {
       about: "",
       gender: "",
     });
+
+    setErrorData({
+      isError: false,
+      errorData: null,
+    });
   };
 
-  // submit form
+  // do signup function
   const submitForm = (event) => {
     event.preventDefault();
 
@@ -76,15 +81,21 @@ const Register = () => {
     }
 
     // all right:
-
+    // call api
     registerUser(data)
       .then((userData) => {
+        // success handler
         console.log(userData);
         toast.success("User created successfully !!");
         clearData();
       })
       .catch((error) => {
+        // error handler
         console.log(error);
+        setErrorData({
+          isError: true,
+          errorData: error,
+        });
         toast.error("Error in creating user ! Try again");
       });
   };
@@ -113,7 +124,7 @@ const Register = () => {
                   Store Signup Here
                 </h3>
 
-                <Form onSubmit={submitForm}>
+                <Form noValidate onSubmit={submitForm}>
                   {/* name field */}
                   <Form.Group className="mb-3" controlId="formName">
                     <Form.Label>Enter your name</Form.Label>
@@ -122,7 +133,11 @@ const Register = () => {
                       placeholder="Enter name"
                       value={data.name}
                       onChange={(event) => handleChange(event, "name")}
+                      isInvalid={errorData.errorData?.response?.data?.name}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {errorData.errorData?.response?.data?.name}
+                    </Form.Control.Feedback>
                   </Form.Group>
 
                   {/* email field */}
@@ -133,7 +148,11 @@ const Register = () => {
                       placeholder="Enter email"
                       value={data.email}
                       onChange={(event) => handleChange(event, "email")}
+                      isInvalid={errorData.errorData?.response?.data?.email}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {errorData.errorData?.response?.data?.email}
+                    </Form.Control.Feedback>
                   </Form.Group>
 
                   {/* password field */}
@@ -144,7 +163,11 @@ const Register = () => {
                       placeholder="Enter password"
                       value={data.password}
                       onChange={(event) => handleChange(event, "password")}
+                      isInvalid={errorData.errorData?.response?.data?.password}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {errorData.errorData?.response?.data?.password}
+                    </Form.Control.Feedback>
                   </Form.Group>
 
                   {/* confirm password field */}
@@ -196,7 +219,11 @@ const Register = () => {
                       placeholder="Write here"
                       value={data.about}
                       onChange={(event) => handleChange(event, "about")}
+                      isInvalid={errorData.errorData?.response?.data?.about}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {errorData.errorData?.response?.data?.about}
+                    </Form.Control.Feedback>
                   </Form.Group>
 
                   <Container>
