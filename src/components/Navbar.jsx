@@ -16,8 +16,8 @@ const CustomNavbar = () => {
     >
       <Container>
         <Navbar.Brand as={NavLink} to="/">
-          <img src={logo} alt="logo" width={40} height={40} />
-          ElectroStore
+          <img src={logo} alt="logo" width={25} height={25} />
+          <span className="ms-1 mt-1">ElectroStore</span>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
