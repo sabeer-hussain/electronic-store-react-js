@@ -1,14 +1,103 @@
-import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  Row,
+  Spinner,
+} from "react-bootstrap";
 import Base from "../components/Base";
 import logo from "../assets/logo.png";
+import { useState } from "react";
+import { loginUser } from "../services/user.service";
+import { toast } from "react-toastify";
 import { NavLink } from "react-router-dom";
 
 const Login = () => {
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [error, setError] = useState({
+    isError: false,
+    errorData: null,
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  // handle change
+  const handleChange = (event, property) => {
+    // console.log(event);
+    // console.log(property);
+    setData({ ...data, [property]: event.target.value });
+  };
+
+  // clear data
+  const clearData = () => {
+    setData({
+      email: "",
+      password: "",
+    });
+
+    setError({
+      isError: false,
+      errorData: null,
+    });
+  };
+
+  // submit form - do login function
+  const submitForm = (event) => {
+    event.preventDefault();
+
+    console.log(data);
+
+    // validate client side
+    if (data.email === undefined || data.email.trim() === "") {
+      toast.error("Email required !!");
+      return;
+    }
+
+    if (data.password === undefined || data.password.trim() === "") {
+      toast.error("Password required !!");
+      return;
+    }
+
+    // all right:
+    // call login api
+    setLoading(true);
+    loginUser(data)
+      .then((userData) => {
+        // success handler
+        console.log(userData);
+        toast.success("User Logged In successfully !!");
+        setError({
+          isError: false,
+          errorData: null,
+        });
+      })
+      .catch((error) => {
+        // error handler
+        console.log(error);
+        toast.error(error.response.data.message);
+        setError({
+          isError: true,
+          errorData: error,
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   const loginForm = () => {
     return (
       <Container>
         {/* single row ==> 12 grids (col) */}
         <Row>
+          {/* {JSON.stringify(data)} */}
+
           <Col sm={{ span: 8, offset: 2 }}>
             <Card
               className="my-3 border-0 shadow p-4"
@@ -24,11 +113,16 @@ const Login = () => {
 
                 <h3 className="mb-4 text-center text-uppercase">Store Login</h3>
 
-                <Form>
+                <Form noValidate onSubmit={submitForm}>
                   {/* email login field */}
                   <Form.Group className="mb-3" controlId="formEmail">
                     <Form.Label>Enter your email</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" />
+                    <Form.Control
+                      type="email"
+                      placeholder="Enter email"
+                      value={data.email}
+                      onChange={(event) => handleChange(event, "email")}
+                    />
                   </Form.Group>
 
                   {/* password login field */}
@@ -37,6 +131,8 @@ const Login = () => {
                     <Form.Control
                       type="password"
                       placeholder="Enter password"
+                      value={data.password}
+                      onChange={(event) => handleChange(event, "password")}
                     />
                   </Form.Group>
 
@@ -52,8 +148,21 @@ const Login = () => {
                   </Container>
 
                   <Container className="text-center text-uppercase">
-                    <Button variant="success"></Button>
-                    <Button className="ms-2" variant="danger">
+                    <Button type="submit" variant="success" disabled={loading}>
+                      <Spinner
+                        animation="border"
+                        size="sm"
+                        className="me-2"
+                        hidden={!loading}
+                      />
+                      <span hidden={!loading}>Wait...</span>
+                      <span hidden={loading}>Login</span>
+                    </Button>
+                    <Button
+                      className="ms-2"
+                      variant="danger"
+                      onClick={clearData}
+                    >
                       Reset
                     </Button>
                   </Container>
