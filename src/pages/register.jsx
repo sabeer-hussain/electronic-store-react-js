@@ -1,15 +1,57 @@
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import Base from "../components/Base";
 import logo from "../assets/logo.png";
+import { useState } from "react";
 
 const Register = () => {
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    about: "",
+    gender: "",
+  });
+
+  const [errorData, setErrorData] = useState({
+    isError: false,
+    errorData: null,
+  });
+
+  // handle change
+  const handleChange = (event, property) => {
+    // console.log(event);
+    // console.log(property);
+    setData({ ...data, [property]: event.target.value });
+  };
+
+  // clear data
+  const clearData = () => {
+    setData({
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      about: "",
+      gender: "",
+    });
+  };
+
   const registerForm = () => {
     return (
       <Container>
         {/* single row ==> 12 grids (col) */}
         <Row>
+          {/* {JSON.stringify(data)} */}
+
           <Col sm={{ span: 8, offset: 2 }}>
-            <Card className="my-3 border-0 shadow p-4">
+            <Card
+              className="my-3 border-0 shadow p-4"
+              style={{
+                position: "relative",
+                top: -60,
+              }}
+            >
               <Card.Body>
                 <Container className="text-center mb-3">
                   <img src={logo} alt="Store logo" width={80} height={80} />
@@ -23,13 +65,23 @@ const Register = () => {
                   {/* name field */}
                   <Form.Group className="mb-3" controlId="formName">
                     <Form.Label>Enter your name</Form.Label>
-                    <Form.Control type="text" placeholder="Enter name" />
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter name"
+                      value={data.name}
+                      onChange={(event) => handleChange(event, "name")}
+                    />
                   </Form.Group>
 
                   {/* email field */}
                   <Form.Group className="mb-3" controlId="formEmail">
                     <Form.Label>Enter your email</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" />
+                    <Form.Control
+                      type="email"
+                      placeholder="Enter email"
+                      value={data.email}
+                      onChange={(event) => handleChange(event, "email")}
+                    />
                   </Form.Group>
 
                   {/* password field */}
@@ -38,6 +90,8 @@ const Register = () => {
                     <Form.Control
                       type="password"
                       placeholder="Enter password"
+                      value={data.password}
+                      onChange={(event) => handleChange(event, "password")}
                     />
                   </Form.Group>
 
@@ -47,6 +101,10 @@ const Register = () => {
                     <Form.Control
                       type="password"
                       placeholder="Re-Enter password"
+                      value={data.confirmPassword}
+                      onChange={(event) =>
+                        handleChange(event, "confirmPassword")
+                      }
                     />
                   </Form.Group>
 
@@ -60,6 +118,9 @@ const Register = () => {
                         label="Male"
                         type={"radio"}
                         id={"gender"}
+                        value={"male"}
+                        checked={data.gender === "male"}
+                        onChange={(event) => handleChange(event, "gender")}
                       />
                       <Form.Check
                         inline
@@ -67,6 +128,9 @@ const Register = () => {
                         label="Female"
                         type={"radio"}
                         id={"gender"}
+                        value={data.gender && "female"}
+                        checked={data.gender === "female"}
+                        onChange={(event) => handleChange(event, "gender")}
                       />
                     </div>
                   </Form.Group>
@@ -78,6 +142,8 @@ const Register = () => {
                       as={"textarea"}
                       rows="6"
                       placeholder="Write here"
+                      value={data.about}
+                      onChange={(event) => handleChange(event, "about")}
                     />
                   </Form.Group>
                 </Form>
@@ -93,7 +159,11 @@ const Register = () => {
                   <Button className="text-uppercase" variant="success">
                     Register
                   </Button>
-                  <Button className="ms-2 text-uppercase" variant="danger">
+                  <Button
+                    className="ms-2 text-uppercase"
+                    variant="danger"
+                    onClick={clearData}
+                  >
                     Reset
                   </Button>
                 </Container>
