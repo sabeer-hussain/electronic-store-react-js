@@ -1,4 +1,12 @@
-import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  Row,
+  Spinner,
+} from "react-bootstrap";
 import Base from "../components/Base";
 import logo from "../assets/logo.png";
 import { useState } from "react";
@@ -19,6 +27,8 @@ const Register = () => {
     isError: false,
     errorData: null,
   });
+
+  const [loading, setLoading] = useState(false);
 
   // handle change
   const handleChange = (event, property) => {
@@ -82,6 +92,7 @@ const Register = () => {
 
     // all right:
     // call api
+    setLoading(true);
     registerUser(data)
       .then((userData) => {
         // success handler
@@ -97,6 +108,9 @@ const Register = () => {
           errorData: error,
         });
         toast.error("Error in creating user ! Try again");
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -238,8 +252,16 @@ const Register = () => {
                       type="submit"
                       className="text-uppercase"
                       variant="success"
+                      disabled={loading}
                     >
-                      Register
+                      <Spinner
+                        animation="border"
+                        size="sm"
+                        className="me-2"
+                        hidden={!loading}
+                      />
+                      <span hidden={!loading}>Wait...</span>
+                      <span hidden={loading}>Register</span>
                     </Button>
                     <Button
                       className="ms-2 text-uppercase"
