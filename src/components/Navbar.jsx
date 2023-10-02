@@ -16,8 +16,8 @@ const CustomNavbar = () => {
     >
       <Container>
         <Navbar.Brand as={NavLink} to="/">
-          <img src={logo} alt="logo" width={40} height={40} />
-          ElectroStore
+          <img src={logo} alt="logo" width={25} height={25} />
+          <span className="ms-1 mt-1">ElectroStore</span>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
@@ -46,8 +46,12 @@ const CustomNavbar = () => {
             <Nav.Link as={NavLink} to="/cart">
               Cart ( 40 )
             </Nav.Link>
-            <Nav.Link href="#deets">Login</Nav.Link>
-            <Nav.Link href="#deets">Signup</Nav.Link>
+            <Nav.Link as={NavLink} to="/login">
+              Login
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/register">
+              Signup
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
