@@ -1,0 +1,45 @@
+// data : save localStorage
+export const doLoginInLocalStorage = (data) => {
+  localStorage.setItem("userData", JSON.stringify(data));
+  // next();
+};
+
+// data : fetch user
+export const getUserFromLocalStorage = () => {
+  const data = getDataFromLocalStorage();
+  if (data !== null) {
+    return data.user;
+  }
+  return null;
+};
+
+// data : fetch token
+export const getTokenFromLocalStorage = () => {
+  const data = getDataFromLocalStorage();
+  if (data !== null) {
+    return data.jwtToken;
+  }
+  return null;
+};
+
+// data : fetch user data (token and user)
+export const getDataFromLocalStorage = () => {
+  const data = localStorage.getItem("userData");
+  if (data && data !== "undefined") {
+    return JSON.parse(data);
+  }
+  return null;
+};
+
+// check user logged in or not
+export const isLoggedIn = () => {
+  if (getTokenFromLocalStorage() !== null) {
+    return true;
+  }
+  return false;
+};
+
+// data : remove : logout
+export const doLogoutFromLocalStorage = () => {
+  localStorage.removeItem("userData");
+};
