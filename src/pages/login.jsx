@@ -84,9 +84,15 @@ const Login = () => {
           errorData: null,
         });
 
-        // once user is logged in successfully, set the login detail and user data in UserContext so that it can be consumed by required components.
-        userContext.setIsLogin(true);
-        userContext.setUserData(userData);
+        // once user is logged in successfully, set the login detail and user data in UserContext so that
+        // it can be consumed by required components.
+        // userContext.setIsLogin(true);
+        // userContext.setUserData(userData);
+
+        // but the above 2 lines of code are implemented before localStorage.
+        // now when the user is logged in successfully, we will call doLogin() function of UserProvider
+        // which will do this above things in UserProvider and also it will set the user data in localStorage.
+        userContext.login(userData);
 
         // redirect to dashboard page
         // 1. if normal user, then redirect to normal user dashboard

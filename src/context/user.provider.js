@@ -1,9 +1,16 @@
 import { useState } from "react";
 import UserContext from "./user.context";
+import { useEffect } from "react";
+import {
+  doLoginInLocalStorage,
+  doLogoutFromLocalStorage,
+  getDataFromLocalStorage,
+  isLoggedIn,
+} from "../auth/helper.auth";
 
 const UserProvider = ({ children }) => {
   const [isLogin, setIsLogin] = useState(false);
-  const [userData, setUserDatta] = useState(null);
+  const [userData, setUserData] = useState(null);
   /*
     userData: {
         jwtToken: "",
@@ -13,13 +20,36 @@ const UserProvider = ({ children }) => {
     }
   */
 
+  useEffect(() => {
+    setIsLogin(isLoggedIn());
+    setUserData(getDataFromLocalStorage());
+  }, []);
+
+  // login
+  const doLogin = (data) => {
+    doLoginInLocalStorage(data);
+    setIsLogin(true);
+    setUserData(getDataFromLocalStorage());
+  };
+
+  // logout
+  const doLogout = () => {
+    doLogoutFromLocalStorage();
+    setIsLogin(false);
+    setUserData(null);
+  };
+
   return (
     <UserContext.Provider
       value={{
         userData: userData,
-        setUserData: setUserDatta,
+        // you can remove setUserData function
+        setUserData: setUserData,
         isLogin: isLogin,
+        // you can remove setIsLogin function
         setIsLogin: setIsLogin,
+        login: doLogin,
+        logout: doLogout,
       }}
     >
       {children}

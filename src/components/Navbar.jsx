@@ -11,8 +11,13 @@ const CustomNavbar = () => {
   const userContext = useContext(UserContext);
 
   const doLogout = () => {
-    userContext.setIsLogin(false);
-    userContext.setUserData(null);
+    // userContext.setIsLogin(false);
+    // userContext.setUserData(null);
+
+    // but the above 2 lines of code are implemented before localStorage.
+    // now when the user is logged out successfully, we will call doLogout() function of UserProvider
+    // which will do this above things in UserProvider and also it will remove the user data from localStorage.
+    userContext.logout();
   };
 
   return (
