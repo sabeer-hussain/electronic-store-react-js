@@ -13,6 +13,7 @@ import Contact from "./pages/contact";
 import { Flip, ToastContainer, Zoom } from "react-toastify";
 import Login from "./pages/login";
 import Register from "./pages/register";
+import Home from "./pages/users/home";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/users" element={<Dashboard />}>
+          <Route path="home" element={<Home />} />
           <Route path="profile" element={<Profile />} />
           <Route path="about" element={<AboutUser />} />
         </Route>

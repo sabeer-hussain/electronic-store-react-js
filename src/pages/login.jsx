@@ -13,9 +13,11 @@ import logo from "../assets/logo.png";
 import { useState } from "react";
 import { loginUser } from "../services/user.service";
 import { toast } from "react-toastify";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const redirect = useNavigate();
+
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -54,7 +56,7 @@ const Login = () => {
 
     console.log(data);
 
-    // validate client side
+    // client side validations
     if (data.email === undefined || data.email.trim() === "") {
       toast.error("Email required !!");
       return;
@@ -77,6 +79,13 @@ const Login = () => {
           isError: false,
           errorData: null,
         });
+
+        // redirect to dashboard page
+        // 1. if normal user, then redirect to normal user dashboard
+        // /users/home
+        redirect("/users/home");
+
+        // 2. if admin user, then redirect to admin user dashboard
       })
       .catch((error) => {
         // error handler
