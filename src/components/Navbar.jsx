@@ -4,8 +4,17 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import logo from "./../assets/logo.png";
 import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import UserContext from "../context/user.context";
 
 const CustomNavbar = () => {
+  const userContext = useContext(UserContext);
+
+  const doLogout = () => {
+    userContext.setIsLogin(false);
+    userContext.setUserData(null);
+  };
+
   return (
     <Navbar
       collapseOnSelect
@@ -46,12 +55,23 @@ const CustomNavbar = () => {
             <Nav.Link as={NavLink} to="/cart">
               Cart ( 40 )
             </Nav.Link>
-            <Nav.Link as={NavLink} to="/login">
-              Login
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/register">
-              Signup
-            </Nav.Link>
+            {userContext.isLogin ? (
+              <>
+                <Nav.Link as={NavLink} to="/users/home">
+                  {userContext.userData.user.email}
+                </Nav.Link>
+                <Nav.Link onClick={doLogout}>Logout</Nav.Link>
+              </>
+            ) : (
+              <>
+                <Nav.Link as={NavLink} to="/login">
+                  Login
+                </Nav.Link>
+                <Nav.Link as={NavLink} to="/register">
+                  Signup
+                </Nav.Link>
+              </>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

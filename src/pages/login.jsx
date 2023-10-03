@@ -14,8 +14,12 @@ import { useState } from "react";
 import { loginUser } from "../services/user.service";
 import { toast } from "react-toastify";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import UserContext from "../context/user.context";
 
 const Login = () => {
+  const userContext = useContext(UserContext);
+
   const redirect = useNavigate();
 
   const [data, setData] = useState({
@@ -80,6 +84,10 @@ const Login = () => {
           errorData: null,
         });
 
+        // once user is logged in successfully, set the login detail and user data in UserContext so that it can be consumed by required components.
+        userContext.setIsLogin(true);
+        userContext.setUserData(userData);
+
         // redirect to dashboard page
         // 1. if normal user, then redirect to normal user dashboard
         // /users/home
@@ -117,6 +125,7 @@ const Login = () => {
               }}
             >
               <Card.Body>
+                {/* {JSON.stringify(userContext)} */}
                 <Container className="text-center mb-3">
                   <img src={logo} alt="Store logo" width={80} height={80} />
                 </Container>
