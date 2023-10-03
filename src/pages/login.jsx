@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Card,
   Col,
@@ -112,6 +113,22 @@ const Login = () => {
                 </Container>
 
                 <h3 className="mb-4 text-center text-uppercase">Store Login</h3>
+
+                <Alert
+                  className="mt-3"
+                  variant="danger"
+                  show={error.isError}
+                  dismissible
+                  onClose={() =>
+                    setError({
+                      isError: false,
+                      errorData: null,
+                    })
+                  }
+                >
+                  <Alert.Heading>Hey there,</Alert.Heading>
+                  <p>{error.errorData?.response?.data?.message}</p>
+                </Alert>
 
                 <Form noValidate onSubmit={submitForm}>
                   {/* email login field */}
