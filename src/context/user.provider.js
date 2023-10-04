@@ -5,12 +5,14 @@ import {
   doLoginInLocalStorage,
   doLogoutFromLocalStorage,
   getDataFromLocalStorage,
+  isAdminUser as adminUser,
   isLoggedIn,
 } from "../auth/helper.auth";
 
 const UserProvider = ({ children }) => {
   const [isLogin, setIsLogin] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [isAdminUser, setIsAdminUser] = useState(false);
   /*
     userData: {
         jwtToken: "",
@@ -22,6 +24,7 @@ const UserProvider = ({ children }) => {
 
   useEffect(() => {
     setIsLogin(isLoggedIn());
+    setIsAdminUser(adminUser());
     setUserData(getDataFromLocalStorage());
   }, []);
 
@@ -29,6 +32,7 @@ const UserProvider = ({ children }) => {
   const doLogin = (data) => {
     doLoginInLocalStorage(data);
     setIsLogin(true);
+    setIsAdminUser(adminUser());
     setUserData(getDataFromLocalStorage());
   };
 
@@ -36,6 +40,7 @@ const UserProvider = ({ children }) => {
   const doLogout = () => {
     doLogoutFromLocalStorage();
     setIsLogin(false);
+    setIsAdminUser(adminUser());
     setUserData(null);
   };
 
@@ -49,6 +54,7 @@ const UserProvider = ({ children }) => {
         // you can remove setIsLogin function
         setIsLogin: setIsLogin,
         login: doLogin,
+        isAdminUser: isAdminUser,
         logout: doLogout,
       }}
     >
