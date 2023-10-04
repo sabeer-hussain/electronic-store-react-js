@@ -5,7 +5,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import logo from "./../assets/logo.png";
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
-import UserContext from "../context/user.context";
+import UserContext from "../context/UserContext";
 
 const CustomNavbar = () => {
   const userContext = useContext(UserContext);

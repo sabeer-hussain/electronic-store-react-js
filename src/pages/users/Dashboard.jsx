@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { NavLink, Navigate, Outlet } from "react-router-dom";
-import UserContext from "../../context/user.context";
+import UserContext from "../../context/UserContext";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
-import { isLoggedIn } from "../../auth/helper.auth";
+import { isLoggedIn } from "../../auth/HelperAuth";
 
 const Dashboard = () => {
   const userContext = useContext(UserContext);

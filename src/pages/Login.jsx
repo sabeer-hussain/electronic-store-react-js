@@ -11,11 +11,11 @@ import {
 import Base from "../components/Base";
 import logo from "../assets/logo.png";
 import { useState } from "react";
-import { loginUser } from "../services/user.service";
+import { loginUser } from "../services/UserService";
 import { toast } from "react-toastify";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import UserContext from "../context/user.context";
+import UserContext from "../context/UserContext";
 
 const Login = () => {
   const userContext = useContext(UserContext);

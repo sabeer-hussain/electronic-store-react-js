@@ -10,7 +10,7 @@ import {
 import Base from "../components/Base";
 import logo from "../assets/logo.png";
 import { useState } from "react";
-import { registerUser } from "../services/user.service";
+import { registerUser } from "../services/UserService";
 import { toast } from "react-toastify";
 import { NavLink } from "react-router-dom";
 
