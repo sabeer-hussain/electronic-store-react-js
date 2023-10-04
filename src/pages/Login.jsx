@@ -41,8 +41,8 @@ const Login = () => {
     setData({ ...data, [property]: event.target.value });
   };
 
-  // clear data
-  const clearData = () => {
+  // handle reset to clear data
+  const handleReset = () => {
     setData({
       email: "",
       password: "",
@@ -196,13 +196,13 @@ const Login = () => {
                         className="me-2"
                         hidden={!loading}
                       />
-                      <span hidden={!loading}>Wait...</span>
+                      <span hidden={!loading}>Please wait...</span>
                       <span hidden={loading}>Login</span>
                     </Button>
                     <Button
                       className="ms-2"
                       variant="danger"
-                      onClick={clearData}
+                      onClick={handleReset}
                     >
                       Reset
                     </Button>
