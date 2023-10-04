@@ -34,6 +34,7 @@ export const getDataFromLocalStorage = () => {
 // check user logged in or not
 export const isLoggedIn = () => {
   if (getTokenFromLocalStorage() !== null) {
+    // get token from server call if needed
     return true;
   }
   return false;

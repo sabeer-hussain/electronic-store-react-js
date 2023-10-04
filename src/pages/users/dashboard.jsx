@@ -1,7 +1,8 @@
 import { useContext } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Navigate, Outlet } from "react-router-dom";
 import UserContext from "../../context/user.context";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { isLoggedIn } from "../../auth/helper.auth";
 
 const Dashboard = () => {
   const userContext = useContext(UserContext);
@@ -40,7 +41,11 @@ const Dashboard = () => {
   };
 
   // managing private routes using conditional rendering
-  return userContext.isLogin ? dashboardView() : notLoggedInView();
+  // return userContext.isLogin ? dashboardView() : notLoggedInView();
+
+  // managing private routes using navigate (redirect)
+  // return userContext.isLogin ? dashboardView() : <Navigate to="/login" />;
+  return isLoggedIn() ? dashboardView() : <Navigate to="/login" />;
 };
 
 export default Dashboard;
