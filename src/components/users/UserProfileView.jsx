@@ -3,7 +3,7 @@ import profileImage from "../../assets/default_profile.jpg";
 import { useContext } from "react";
 import UserContext from "../../context/UserContext";
 
-const UserProfileView = ({ user = null, userImage }) => {
+const UserProfileView = ({ user = null, userImage, handleShowModal }) => {
   const { userData, isLogin } = useContext(UserContext);
 
   const profileStyle = {
@@ -68,7 +68,12 @@ const UserProfileView = ({ user = null, userImage }) => {
 
             {isLogin && userData.user.userId === user.userId ? (
               <Container className="text-center mt-3">
-                <Button className="text-uppercase" variant="success" size="lg">
+                <Button
+                  className="text-uppercase"
+                  variant="success"
+                  size="lg"
+                  onClick={handleShowModal}
+                >
                   Update
                 </Button>
                 <Button
