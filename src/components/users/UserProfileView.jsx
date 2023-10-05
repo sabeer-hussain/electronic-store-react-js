@@ -1,7 +1,11 @@
 import { Button, Card, Container, Table } from "react-bootstrap";
 import profileImage from "../../assets/default_profile.jpg";
+import { useContext } from "react";
+import UserContext from "../../context/UserContext";
 
 const UserProfileView = ({ user = null, userImage }) => {
+  const { userData, isLogin } = useContext(UserContext);
+
   const profileStyle = {
     height: "200px",
     width: "200px",
@@ -62,18 +66,22 @@ const UserProfileView = ({ user = null, userImage }) => {
               </Card>
             </div>
 
-            <Container className="text-center mt-3">
-              <Button className="text-uppercase" variant="success" size="lg">
-                Update
-              </Button>
-              <Button
-                className="text-uppercase ms-2"
-                variant="warning"
-                size="lg"
-              >
-                Orders
-              </Button>
-            </Container>
+            {isLogin && userData.user.userId === user.userId ? (
+              <Container className="text-center mt-3">
+                <Button className="text-uppercase" variant="success" size="lg">
+                  Update
+                </Button>
+                <Button
+                  className="text-uppercase ms-2"
+                  variant="warning"
+                  size="lg"
+                >
+                  Orders
+                </Button>
+              </Container>
+            ) : (
+              ""
+            )}
           </Card.Body>
         </Card>
       )}
