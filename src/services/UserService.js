@@ -13,3 +13,14 @@ export const loginUser = (loginData) => {
     .post("/auth/login", loginData)
     .then((response) => response.data);
 };
+
+// get user
+export const getUser = (userId, jwtToken) => {
+  return publicAxios
+    .get(`/users/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    })
+    .then((response) => response.data);
+};

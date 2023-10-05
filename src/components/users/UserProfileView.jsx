@@ -56,7 +56,7 @@ const UserProfileView = ({ user = null }) => {
                         <td>Roles</td>
                         <td>
                           {user.roles.map((role) => (
-                            <div>{role.roleName}</div>
+                            <div key={role.roleId}>{role.roleName}</div>
                           ))}
                         </td>
                       </tr>
