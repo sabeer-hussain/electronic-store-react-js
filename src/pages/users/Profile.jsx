@@ -2,7 +2,7 @@ import { Alert, Col, Container, Row } from "react-bootstrap";
 import UserContext from "../../context/UserContext";
 import UserProfileView from "../../components/users/UserProfileView";
 import { useContext, useEffect, useState } from "react";
-import { getUser } from "../../services/UserService";
+import { getUser, getUserImage } from "../../services/UserService";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 
@@ -12,6 +12,7 @@ const Profile = () => {
   const { userId } = useParams();
 
   const [user, setUser] = useState(null);
+  const [userImage, setUserImage] = useState(null);
 
   useEffect(() => {
     // to get user data using context
@@ -28,7 +29,7 @@ const Profile = () => {
     }
   }, [userContext.userData]);
 
-  const getUserDataFromServer = () => {
+  const getUserDataFromServer = async () => {
     // api call
     console.log(userContext);
 
@@ -44,6 +45,7 @@ const Profile = () => {
         setUser(null);
         toast.error("Error in loading user information from server !!");
       });
+    setUserImage(await getUserImage(userId, jwtToken));
   };
 
   return (
@@ -66,6 +68,7 @@ const Profile = () => {
                   // }
                   user
                 }
+                userImage={userImage}
               />
             ) : (
               <Alert>

@@ -1,12 +1,12 @@
 import { Button, Card, Container, Table } from "react-bootstrap";
 import profileImage from "../../assets/default_profile.jpg";
-import { BASE_URL } from "../../services/HelperService";
 
-const UserProfileView = ({ user = null }) => {
+const UserProfileView = ({ user = null, userImage }) => {
   const profileStyle = {
     height: "200px",
     width: "200px",
     borderRadius: "50%",
+    objectFit: "cover",
   };
   return (
     <>
@@ -15,11 +15,7 @@ const UserProfileView = ({ user = null }) => {
           <Card.Body>
             <Container className="text-center my-3">
               <img
-                src={
-                  user.imageName
-                    ? BASE_URL + "/users/image/" + user.userId
-                    : profileImage
-                }
+                src={user.imageName ? userImage : profileImage}
                 alt="Profile Image"
                 className="border border-dark"
                 style={profileStyle}
