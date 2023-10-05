@@ -12,7 +12,7 @@ import {
 import UserContext from "../../context/UserContext";
 import UserProfileView from "../../components/users/UserProfileView";
 import { useContext, useEffect, useState } from "react";
-import { getUser, getUserImage, updateUser } from "../../services/UserService";
+import { getUser, updateUser } from "../../services/UserService";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 
@@ -22,7 +22,6 @@ const Profile = () => {
   const { userId } = useParams();
 
   const [user, setUser] = useState(null);
-  const [userImage, setUserImage] = useState(null);
 
   // modals state
   const [show, setShow] = useState(false);
@@ -42,7 +41,7 @@ const Profile = () => {
     getUserDataFromServer();
   }, []);
 
-  const getUserDataFromServer = async () => {
+  const getUserDataFromServer = () => {
     // api call
     console.log(userContext);
 
@@ -57,7 +56,6 @@ const Profile = () => {
         setUser(null);
         toast.error("Error in loading user information from server !!");
       });
-    setUserImage(await getUserImage(userId));
   };
 
   const updateFieldHandler = (event, property) => {
@@ -222,7 +220,7 @@ const Profile = () => {
                     // }
                     user
                   }
-                  userImage={userImage}
+                  userId={userId}
                   handleShowModal={handleShowModal}
                 />
                 {updateViewModal()}
