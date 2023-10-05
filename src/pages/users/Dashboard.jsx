@@ -11,7 +11,7 @@ const Dashboard = () => {
   const dashboardView = () => {
     return (
       <div>
-        <h1>This is User dashboard</h1>
+        {/* <h1>This is User dashboard</h1> */}
 
         {/* nested route */}
         <Outlet />
