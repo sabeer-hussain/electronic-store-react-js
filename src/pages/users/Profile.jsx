@@ -12,7 +12,7 @@ import {
 import UserContext from "../../context/UserContext";
 import UserProfileView from "../../components/users/UserProfileView";
 import { useContext, useEffect, useState } from "react";
-import { getUser, getUserImage } from "../../services/UserService";
+import { getUser, getUserImage, updateUser } from "../../services/UserService";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 
@@ -69,6 +69,26 @@ const Profile = () => {
       ...user,
       [property]: event.target.value,
     });
+  };
+
+  const updateUserData = () => {
+    console.log("updating user data");
+    if (user.name === undefined || user.name.trim() === "") {
+      toast.error("user name required !!");
+      return;
+    }
+
+    // ... rest of the field if needed
+
+    updateUser(user)
+      .then((updatedUser) => {
+        console.log(updatedUser);
+        toast.success("User details updated !!");
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Not updated !! Error");
+      });
   };
 
   // update view
@@ -176,7 +196,7 @@ const Profile = () => {
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary" onClick={handleClose}>
+            <Button variant="primary" onClick={updateUserData}>
               Save Changes
             </Button>
           </Modal.Footer>

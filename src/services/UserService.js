@@ -1,6 +1,6 @@
 // user related api calls
 
-import { publicAxios } from "./AxiosService";
+import { privateAxios, publicAxios } from "./AxiosService";
 import { BASE_URL } from "./HelperService";
 
 // register new user
@@ -50,4 +50,11 @@ const getBase64Image = async (res) => {
     reader.readAsDataURL(blob);
   });
   return reader.result;
+};
+
+// update user
+export const updateUser = (user) => {
+  return privateAxios
+    .put(`/users/${user.userId}`, user)
+    .then((response) => response.data);
 };
