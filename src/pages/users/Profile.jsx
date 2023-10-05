@@ -4,12 +4,25 @@ import UserProfileView from "../../components/users/UserProfileView";
 import { useContext, useEffect, useState } from "react";
 import { getUser } from "../../services/UserService";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 const Profile = () => {
   const userContext = useContext(UserContext);
+
+  const { userId } = useParams();
+
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    // to get user data using context
+    // if (userContext.userData) {
+    //   getUserDataFromServer();
+    // }
+
+    // If we use params approach, then we dont need to use if condition bcoz userId will be available
+    // in the profile url before we click the profile button. But since we needed jwtToken, we are
+    // keeping it.
+    // console.log("data from url userid " + userId);
     if (userContext.userData) {
       getUserDataFromServer();
     }
@@ -19,7 +32,7 @@ const Profile = () => {
     // api call
     console.log(userContext);
 
-    const userId = userContext.userData.user.userId;
+    // const userId = userContext.userData.user.userId;
     const jwtToken = userContext.userData.jwtToken;
     getUser(userId, jwtToken)
       .then((data) => {
