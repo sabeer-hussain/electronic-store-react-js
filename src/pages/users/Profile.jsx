@@ -64,6 +64,13 @@ const Profile = () => {
     setUserImage(await getUserImage(userId, jwtToken));
   };
 
+  const updateFieldHandler = (event, property) => {
+    setUser({
+      ...user,
+      [property]: event.target.value,
+    });
+  };
+
   // update view
   const updateViewModal = () => {
     return (
@@ -87,6 +94,9 @@ const Profile = () => {
                           className="text-center"
                           type="text"
                           value={user.name}
+                          onChange={(event) =>
+                            updateFieldHandler(event, "name")
+                          }
                         />
                       </td>
                     </tr>
@@ -95,8 +105,46 @@ const Profile = () => {
                       <td>{user.email}</td>
                     </tr>
                     <tr>
+                      <td>New Password</td>
+                      <td>
+                        <Form.Control
+                          className="text-center"
+                          type="password"
+                          placeholder="Enter new password here"
+                          onChange={(event) =>
+                            updateFieldHandler(event, "password")
+                          }
+                        />
+                      </td>
+                    </tr>
+                    <tr>
                       <td>Gender</td>
-                      <td>{user.gender}</td>
+                      <td>
+                        <Form.Check
+                          inline
+                          name="gender"
+                          label="Male"
+                          type={"radio"}
+                          id={"gender"}
+                          value={"male"}
+                          checked={user.gender === "male"}
+                          onChange={(event) =>
+                            updateFieldHandler(event, "gender")
+                          }
+                        />
+                        <Form.Check
+                          inline
+                          name="gender"
+                          label="Female"
+                          type={"radio"}
+                          id={"gender"}
+                          value={user.gender && "female"}
+                          checked={user.gender === "female"}
+                          onChange={(event) =>
+                            updateFieldHandler(event, "gender")
+                          }
+                        />
+                      </td>
                     </tr>
                     <tr>
                       <td>About</td>
@@ -105,6 +153,9 @@ const Profile = () => {
                           as={"textarea"}
                           rows={"8"}
                           value={user.about}
+                          onChange={(event) =>
+                            updateFieldHandler(event, "about")
+                          }
                         />
                       </td>
                     </tr>
