@@ -1,5 +1,6 @@
 // user related api calls
 
+import { getTokenFromLocalStorage } from "../auth/HelperAuth";
 import { privateAxios, publicAxios } from "./AxiosService";
 import { BASE_URL } from "./HelperService";
 
@@ -16,18 +17,13 @@ export const loginUser = (loginData) => {
 };
 
 // get user
-export const getUser = (userId, jwtToken) => {
-  return publicAxios
-    .get(`/users/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${jwtToken}`,
-      },
-    })
-    .then((response) => response.data);
+export const getUser = (userId) => {
+  return privateAxios.get(`/users/${userId}`).then((response) => response.data);
 };
 
 // serve user image
-export const getUserImage = async (userId, jwtToken) => {
+export const getUserImage = async (userId) => {
+  const jwtToken = getTokenFromLocalStorage();
   const userImage = await fetch(`${BASE_URL}/users/image/${userId}`, {
     headers: {
       Authorization: `Bearer ${jwtToken}`,

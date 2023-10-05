@@ -37,21 +37,17 @@ const Profile = () => {
     // }
 
     // If we use params approach, then we dont need to use if condition bcoz userId will be available
-    // in the profile url before we click the profile button. But since we needed jwtToken, we are
-    // keeping it.
+    // in the profile url before we click the profile button.
     // console.log("data from url userid " + userId);
-    if (userContext.userData) {
-      getUserDataFromServer();
-    }
-  }, [userContext.userData]);
+    getUserDataFromServer();
+  }, []);
 
   const getUserDataFromServer = async () => {
     // api call
     console.log(userContext);
 
     // const userId = userContext.userData.user.userId;
-    const jwtToken = userContext.userData.jwtToken;
-    getUser(userId, jwtToken)
+    getUser(userId)
       .then((data) => {
         console.log(data);
         setUser(data);
@@ -61,7 +57,7 @@ const Profile = () => {
         setUser(null);
         toast.error("Error in loading user information from server !!");
       });
-    setUserImage(await getUserImage(userId, jwtToken));
+    setUserImage(await getUserImage(userId));
   };
 
   const updateFieldHandler = (event, property) => {
