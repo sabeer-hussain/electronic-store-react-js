@@ -24,11 +24,14 @@ export const getUser = (userId) => {
 // serve user image
 export const getUserImage = async (userId) => {
   const jwtToken = getTokenFromLocalStorage();
-  const userImage = await fetch(`${BASE_URL}/users/image/${userId}`, {
-    headers: {
-      Authorization: `Bearer ${jwtToken}`,
-    },
-  })
+  const userImage = await fetch(
+    `${BASE_URL}/users/image/${userId}?${new Date().getTime()}`,
+    {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    }
+  )
     .then(getBase64Image)
     .then((imgString) => imgString);
 

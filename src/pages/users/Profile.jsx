@@ -5,6 +5,7 @@ import {
   Col,
   Container,
   Form,
+  InputGroup,
   Modal,
   Row,
   Spinner,
@@ -147,6 +148,14 @@ const Profile = () => {
     }
   };
 
+  // clear the image
+  const clearImage = (event) => {
+    setImage({
+      placeholder: defaultImage,
+      file: null,
+    });
+  };
+
   // update view
   const updateViewModal = () => {
     return (
@@ -176,11 +185,18 @@ const Profile = () => {
                             style={{ objectFit: "cover" }}
                           />
                         </Container>
-
-                        <Form.Control
-                          type="file"
-                          onChange={handleProfileImageChange}
-                        />
+                        <InputGroup className="mb-3">
+                          <Form.Control
+                            type="file"
+                            onChange={handleProfileImageChange}
+                          />
+                          <Button
+                            variant="outline-secondary"
+                            onClick={clearImage}
+                          >
+                            Clear
+                          </Button>
+                        </InputGroup>
                         <p className="mt-2 text-muted">
                           Select Square size picture for better ui.
                         </p>
