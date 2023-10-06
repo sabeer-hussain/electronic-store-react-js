@@ -1,6 +1,8 @@
 // user related api calls
 
-import { publicAxios } from "./AxiosService";
+import { getTokenFromLocalStorage } from "../auth/HelperAuth";
+import { privateAxios, publicAxios } from "./AxiosService";
+import { BASE_URL } from "./HelperService";
 
 // register new user
 export const registerUser = (userData) => {
@@ -11,5 +13,59 @@ export const registerUser = (userData) => {
 export const loginUser = (loginData) => {
   return publicAxios
     .post("/auth/login", loginData)
+    .then((response) => response.data);
+};
+
+// get user
+export const getUser = (userId) => {
+  return privateAxios.get(`/users/${userId}`).then((response) => response.data);
+};
+
+// serve user image
+export const getUserImage = async (userId) => {
+  const jwtToken = getTokenFromLocalStorage();
+  const userImage = await fetch(
+    `${BASE_URL}/users/image/${userId}?${new Date().getTime()}`,
+    {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    }
+  )
+    .then(getBase64Image)
+    .then((imgString) => imgString);
+
+  return userImage;
+};
+
+const getBase64Image = async (res) => {
+  const blob = await res.blob();
+
+  const reader = new FileReader();
+
+  await new Promise((resolve, reject) => {
+    reader.onload = resolve;
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+  return reader.result;
+};
+
+// update user
+export const updateUser = (user) => {
+  return privateAxios
+    .put(`/users/${user.userId}`, user)
+    .then((response) => response.data);
+};
+
+// update user profile picture
+export const updateUserProfilePicture = (file, userId) => {
+  if (file == null) {
+    return;
+  }
+  const data = new FormData();
+  data.append("userImage", file);
+  return privateAxios
+    .post(`/users/image/${userId}`, data)
     .then((response) => response.data);
 };

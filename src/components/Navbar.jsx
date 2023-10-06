@@ -69,7 +69,10 @@ const CustomNavbar = () => {
                     </Nav.Link>
                   </>
                 )}
-                <Nav.Link as={NavLink} to="/users/home">
+                <Nav.Link
+                  as={NavLink}
+                  to={`/users/profile/${userContext.userData.user.userId}`}
+                >
                   {userContext.userData.user.email}
                 </Nav.Link>
                 <Nav.Link as={NavLink} to="/users/orders">
