@@ -17,7 +17,7 @@ const UserProfileView = ({ user = null, userId, handleShowModal }) => {
     // api call
     console.log(userContext);
 
-    setUserImage(await getUserImage(userId));
+    setUserImage(await getUserImage(userId + "?" + new Date().getTime()));
   };
 
   const { userData, isLogin } = useContext(UserContext);

@@ -13,9 +13,14 @@ import {
 import UserContext from "../../context/UserContext";
 import UserProfileView from "../../components/users/UserProfileView";
 import { useContext, useEffect, useState } from "react";
-import { getUser, updateUser } from "../../services/UserService";
+import {
+  getUser,
+  updateUser,
+  updateUserProfilePicture,
+} from "../../services/UserService";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
+import defaultImage from "../../assets/default_profile.jpg";
 
 const Profile = () => {
   const userContext = useContext(UserContext);
@@ -24,9 +29,14 @@ const Profile = () => {
 
   const [user, setUser] = useState(null);
 
+  // state for handle image
+  const [image, setImage] = useState({
+    placeholder: defaultImage,
+    file: null,
+  });
+
   // modals state
   const [show, setShow] = useState(false);
-
   const [updateLoading, setUpdateLoading] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -68,6 +78,7 @@ const Profile = () => {
     });
   };
 
+  // update user data by calling api
   const updateUserData = () => {
     console.log("updating user data");
     if (user.name === undefined || user.name.trim() === "") {
@@ -82,7 +93,25 @@ const Profile = () => {
       .then((updatedUser) => {
         console.log(updatedUser);
         toast.success("User details updated !!");
-        handleClose();
+        // update image:
+        if (image.file == null) {
+          setUpdateLoading(false);
+          handleClose();
+          return;
+        }
+        updateUserProfilePicture(image.file, user.userId)
+          .then((data) => {
+            console.log(data);
+            toast.success(data.message);
+            handleClose();
+          })
+          .catch((error) => {
+            console.log(error);
+            toast.error("Image not uploaded !!");
+          })
+          .finally(() => {
+            setUpdateLoading(false);
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -90,10 +119,32 @@ const Profile = () => {
         //   toast.error(error.response.data.name);
         // }
         toast.error("Not updated !! Error");
-      })
-      .finally(() => {
         setUpdateLoading(false);
       });
+  };
+
+  // function for image change
+  const handleProfileImageChange = (event) => {
+    // const localFile = event.target.files[0];
+    console.log(event.target.files[0]);
+    if (
+      event.target.files[0].type === "image/png" ||
+      event.target.files[0].type === "image/jpeg"
+    ) {
+      // preview show
+      const reader = new FileReader();
+      reader.onload = (r) => {
+        setImage({
+          placeholder: r.target.result,
+          file: event.target.files[0],
+        });
+        console.log(r.target.result);
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    } else {
+      toast.error("Invalid File !!");
+      image.file = null;
+    }
   };
 
   // update view
@@ -112,6 +163,29 @@ const Profile = () => {
               <Card.Body>
                 <Table responsive hover>
                   <tbody>
+                    <tr>
+                      <td>Profile Image</td>
+                      <td>
+                        {/* image tag for preview */}
+                        <Container className="text-center mb-3">
+                          <img
+                            src={image.placeholder}
+                            alt=""
+                            width={200}
+                            height={200}
+                            style={{ objectFit: "cover" }}
+                          />
+                        </Container>
+
+                        <Form.Control
+                          type="file"
+                          onChange={handleProfileImageChange}
+                        />
+                        <p className="mt-2 text-muted">
+                          Select Square size picture for better ui.
+                        </p>
+                      </td>
+                    </tr>
                     <tr>
                       <td>Name</td>
                       <td>
