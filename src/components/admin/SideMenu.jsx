@@ -14,7 +14,7 @@ import { HiOutlineLogout } from "react-icons/hi";
 const SideMenu = () => {
   return (
     <>
-      <ListGroup variant="flush">
+      <ListGroup variant="flush" className="sticky-top">
         <ListGroup.Item as={NavLink} to="/admin/home" action>
           <GrHome size={20} />
           <span className="ms-2"> Home</span>

@@ -1,7 +1,14 @@
+import CategoryView from "../../components/CategoryView";
+
 const ViewCategories = () => {
   return (
     <>
-      <p>View Categories</p>
+      <CategoryView />
+      <CategoryView />
+      <CategoryView />
+      <CategoryView />
+      <CategoryView />
+      <CategoryView />
     </>
   );
 };
