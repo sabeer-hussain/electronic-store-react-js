@@ -8,3 +8,8 @@ export const addCategory = (category) => {
     .post("/categories", category)
     .then((response) => response.data);
 };
+
+// get all categories
+export const getCategories = () => {
+  return privateAxios.get("/categories").then((response) => response.data);
+};
