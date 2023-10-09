@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 const SideMenu = () => {
   return (
     <>
-      <ListGroup>
+      <ListGroup variant="flush">
         <ListGroup.Item as={NavLink} to="/admin/home" action>
           Home
         </ListGroup.Item>
