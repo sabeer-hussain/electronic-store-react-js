@@ -1,27 +1,43 @@
 import { Badge, ListGroup } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import { GrHome } from "react-icons/gr";
+import { BiCategory } from "react-icons/bi";
+import {
+  MdAddBox,
+  MdDashboard,
+  MdOutlineCategory,
+  MdViewDay,
+} from "react-icons/md";
+import { FaOpencart, FaUserSecret } from "react-icons/fa";
+import { HiOutlineLogout } from "react-icons/hi";
 
 const SideMenu = () => {
   return (
     <>
       <ListGroup variant="flush">
         <ListGroup.Item as={NavLink} to="/admin/home" action>
-          Home
+          <GrHome size={20} />
+          <span className="ms-2"> Home</span>
         </ListGroup.Item>
         <ListGroup.Item as={NavLink} to="/admin/add-category" action>
-          Add Category
+          <BiCategory size={20} />
+          <span className="ms-2">Add Category</span>
         </ListGroup.Item>
         <ListGroup.Item as={NavLink} to="/admin/categories" action>
-          View Categories
+          <MdOutlineCategory size={20} />
+          <span className="ms-2">View Categories</span>
         </ListGroup.Item>
         <ListGroup.Item as={NavLink} to="/admin/add-product" action>
-          Add Product
+          <MdAddBox size={20} />
+          <span className="ms-2">Add Product</span>
         </ListGroup.Item>
         <ListGroup.Item as={NavLink} to="/admin/products" action>
-          View Products
+          <MdViewDay size={20} />
+          <span className="ms-2">View Products</span>
         </ListGroup.Item>
         <ListGroup.Item as={NavLink} to="/admin/orders" action>
-          Orders
+          <FaOpencart size={20} />
+          <span className="ms-2">Orders</span>
         </ListGroup.Item>
         <ListGroup.Item
           as={NavLink}
@@ -29,15 +45,22 @@ const SideMenu = () => {
           className="d-flex justify-content-between align-items-start"
           action
         >
-          Users
+          <div>
+            <FaUserSecret size={20} />
+            <span className="ms-2">Users</span>
+          </div>
           <Badge bg="danger" pill>
             New
           </Badge>
         </ListGroup.Item>
         <ListGroup.Item as={NavLink} to="/users/home" action>
-          Dashboard
+          <MdDashboard size={20} />
+          <span className="ms-2">Dashboard</span>
         </ListGroup.Item>
-        <ListGroup.Item action>Logout</ListGroup.Item>
+        <ListGroup.Item action>
+          <HiOutlineLogout size={20} />
+          <span className="ms-2">Logout</span>
+        </ListGroup.Item>
       </ListGroup>
     </>
   );
