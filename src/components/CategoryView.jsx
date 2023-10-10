@@ -1,11 +1,15 @@
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import image from "../assets/logo.png";
 
-const CategoryView = ({ category }) => {
+const CategoryView = ({ category, deleteCat }) => {
   const imageStyle = {
     width: "100px",
     height: "100px",
     objectFit: "cover",
+  };
+
+  const deleteCategory = (categoryId) => {
+    deleteCat(categoryId);
   };
 
   return (
@@ -41,7 +45,12 @@ const CategoryView = ({ category }) => {
                 <Button size="sm" variant="warning" className="mt-1">
                   Update
                 </Button>
-                <Button size="sm" variant="danger" className="mt-1">
+                <Button
+                  size="sm"
+                  variant="danger"
+                  className="mt-1"
+                  onClick={(event) => deleteCategory(category.categoryId)}
+                >
                   Delete
                 </Button>
               </Container>

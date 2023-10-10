@@ -13,3 +13,10 @@ export const addCategory = (category) => {
 export const getCategories = () => {
   return privateAxios.get("/categories").then((response) => response.data);
 };
+
+// delete category
+export const deleteCategory = (categoryId) => {
+  return privateAxios
+    .delete(`/categories/${categoryId}`)
+    .then((response) => response.data);
+};
