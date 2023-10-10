@@ -32,26 +32,24 @@ const ViewCategories = () => {
   const handleCloseUpdate = () => setShowUpdate(false);
   const handleShowUpdate = () => setShowUpdate(true);
 
-  // to load initial page
   useEffect(() => {
-    setLoading(true);
-    getCategories(0, 6)
-      .then((data) => {
-        console.log(data);
-        setCategories(data);
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("Error in loading categories from server !!");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
-
-  // to load current page
-  useEffect(() => {
-    if (currentPage > 0) {
+    if (currentPage === 0) {
+      // to load initial page
+      setLoading(true);
+      getCategories(0, 6)
+        .then((data) => {
+          console.log(data);
+          setCategories(data);
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("Error in loading categories from server !!");
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      // to load current page
       getCategories(currentPage, 6)
         .then((data) => {
           console.log(data);
