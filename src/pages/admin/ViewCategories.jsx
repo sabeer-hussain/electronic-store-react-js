@@ -1,10 +1,14 @@
 import { useState } from "react";
 import CategoryView from "../../components/CategoryView";
-import { deleteCategory, getCategories } from "../../services/CategoryService";
+import {
+  deleteCategory,
+  getCategories,
+  updateCategory,
+} from "../../services/CategoryService";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import { Button, Container, Modal, Spinner } from "react-bootstrap";
+import { Button, Container, Form, Modal, Spinner } from "react-bootstrap";
 
 const ViewCategories = () => {
   const [categories, setCategories] = useState({
@@ -15,10 +19,15 @@ const ViewCategories = () => {
 
   const [loading, setLoading] = useState(false);
 
+  // view modal
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  // update modal
+  const [showUpdate, setShowUpdate] = useState(false);
+  const handleCloseUpdate = () => setShowUpdate(false);
+  const handleShowUpdate = () => setShowUpdate(true);
 
   useEffect(() => {
     setLoading(true);
@@ -45,10 +54,57 @@ const ViewCategories = () => {
 
   // handle update of category
   const handleUpdate = (category) => {
-    alert("update button clicked");
+    // alert("update button clicked");
+    setSelectedCategory(category);
+    handleShowUpdate();
   };
 
-  // modal view: view and update
+  // update the category to server
+  const updateCategoryClicked = (event) => {
+    event.preventDefault();
+    if (
+      selectedCategory.title === undefined ||
+      selectedCategory.title.trim() === ""
+    ) {
+      toast.error("Title required !!");
+      return;
+    }
+    if (
+      selectedCategory.description === undefined ||
+      selectedCategory.description.trim() === ""
+    ) {
+      toast.error("Description required !!");
+      return;
+    }
+
+    updateCategory(selectedCategory)
+      .then((data) => {
+        console.log(data);
+        toast.success("Category Updated");
+
+        const newCategories = categories.content.map((cat) => {
+          if (cat.categoryId === selectedCategory.categoryId) {
+            cat.title = data.title;
+            cat.description = data.description;
+            cat.coverImage = data.coverImage;
+          }
+          return cat;
+        });
+
+        setCategories({
+          ...categories,
+          content: newCategories,
+        });
+
+        handleCloseUpdate();
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Error in updating category !!");
+      });
+  };
+
+  // view modal
   const modalView = (category) => {
     return (
       <>
@@ -69,6 +125,81 @@ const ViewCategories = () => {
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
+  };
+
+  // update modal
+  const modalUpdate = (category) => {
+    return (
+      <>
+        <Modal animation={false} show={showUpdate} onHide={handleCloseUpdate}>
+          <Modal.Header closeButton>
+            <Modal.Title>{selectedCategory.title}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group>
+                <Form.Label>Category Title</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter here"
+                  value={selectedCategory.title}
+                  onChange={(event) =>
+                    setSelectedCategory({
+                      ...selectedCategory,
+                      title: event.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+              <Form.Group className="mt-3">
+                <Form.Label>Category Description</Form.Label>
+                <Form.Control
+                  as={"textarea"}
+                  rows={6}
+                  placeholder="Enter here"
+                  value={selectedCategory.description}
+                  onChange={(event) =>
+                    setSelectedCategory({
+                      ...selectedCategory,
+                      description: event.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+              <Form.Group>
+                <Container className="py-3">
+                  <img
+                    src={selectedCategory.coverImage}
+                    alt=""
+                    className="img-fluid"
+                  />
+                </Container>
+                <Form.Label>Category Image Url</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter here"
+                  value={selectedCategory.coverImage}
+                  onChange={(event) =>
+                    setSelectedCategory({
+                      ...selectedCategory,
+                      coverImage: event.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseUpdate}>
+              Close
+            </Button>
+            <Button variant="success" onClick={updateCategoryClicked}>
+              Update Changes
             </Button>
           </Modal.Footer>
         </Modal>
@@ -138,6 +269,7 @@ const ViewCategories = () => {
       )}
 
       {selectedCategory ? modalView() : ""}
+      {selectedCategory ? modalUpdate() : ""}
     </div>
   );
 };
