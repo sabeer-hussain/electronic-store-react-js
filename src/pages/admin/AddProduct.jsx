@@ -10,6 +10,7 @@ import {
   Row,
 } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { createProductWithoutCategory } from "../../services/ProductService";
 
 const AddProduct = () => {
   const [product, setProduct] = useState({
@@ -50,6 +51,62 @@ const AddProduct = () => {
     }
   };
 
+  // handle add product form
+  const submitAddProductForm = (event) => {
+    event.preventDefault();
+
+    // client side validations
+    if (product.title === undefined || product.title.trim() === "") {
+      toast.error("Title is required !!");
+      return;
+    }
+    if (
+      product.description === undefined ||
+      product.description.trim() === ""
+    ) {
+      toast.error("Description required !!");
+      return;
+    }
+    if (product.price <= 0) {
+      toast.error("Invalid Price !!");
+      return;
+    }
+    if (
+      product.discountedPrice <= 0 ||
+      product.discountedPrice >= product.price
+    ) {
+      toast.error("Invalid Discounted Price !!");
+      return;
+    }
+    if (product.quantity <= 0) {
+      toast.error("Invalid Quantity !!");
+      return;
+    }
+    // remaining validations (validate data) if any
+
+    // call create product without category api
+    createProductWithoutCategory(product)
+      .then((data) => {
+        console.log(data);
+        toast.success("Product is created !!");
+        setProduct({
+          title: "",
+          description: "",
+          price: 0,
+          discountedPrice: 0,
+          quantity: 1,
+          live: false,
+          stock: true,
+          image: undefined,
+          imagePreview: undefined,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Error in creating product !! check product details");
+      });
+  };
+
   const formView = () => {
     return (
       <>
@@ -57,7 +114,7 @@ const AddProduct = () => {
           {/* {JSON.stringify(product)} */}
           <Card.Body>
             <h5>Add Product Here</h5>
-            <Form>
+            <Form onSubmit={submitAddProductForm}>
               {/* product title */}
               <FormGroup className="mt-3">
                 <Form.Label>Product Title</Form.Label>
@@ -215,7 +272,7 @@ const AddProduct = () => {
               </Form.Group>
 
               <Container className="mt-3 text-center">
-                <Button variant="success" size="sm">
+                <Button type="submit" variant="success" size="sm">
                   Add Product
                 </Button>
                 <Button variant="danger" size="sm" className="ms-1">
