@@ -9,6 +9,13 @@ export const createProductWithoutCategory = (product) => {
     .then((response) => response.data);
 };
 
+// create product with category
+export const createProductInCategory = (product, categoryId) => {
+  return privateAxios
+    .post(`/categories/${categoryId}/products`, product)
+    .then((response) => response.data);
+};
+
 // add product image
 export const addProductImage = (file, productId) => {
   const formData = new FormData();

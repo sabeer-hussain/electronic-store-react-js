@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -12,8 +12,10 @@ import {
 import { toast } from "react-toastify";
 import {
   addProductImage,
+  createProductInCategory,
   createProductWithoutCategory,
 } from "../../services/ProductService";
+import { getCategories } from "../../services/CategoryService";
 
 const AddProduct = () => {
   const [product, setProduct] = useState({
@@ -27,6 +29,20 @@ const AddProduct = () => {
     image: undefined,
     imagePreview: undefined,
   });
+  const [categories, setCategories] = useState(undefined);
+  const [selectedCategoryId, setSelectedCategoryId] = useState("none");
+
+  useEffect(() => {
+    getCategories(0, 1000)
+      .then((data) => {
+        console.log(data);
+        setCategories(data);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Error in loading categories");
+      });
+  }, []);
 
   // function for image change
   const handleFileChange = (event) => {
@@ -87,38 +103,74 @@ const AddProduct = () => {
     }
     // remaining validations (validate data) if any
 
-    // call create product without category api
-    createProductWithoutCategory(product)
-      .then((data) => {
-        console.log(data);
+    if (selectedCategoryId === "none") {
+      // call create product without category api
+      createProductWithoutCategory(product)
+        .then((data) => {
+          console.log(data);
 
-        // image upload
-        addProductImage(product.image, data.productId)
-          .then((data) => {
-            console.log(data);
-            toast.success("Image uploaded");
-            setProduct({
-              title: "",
-              description: "",
-              price: 0,
-              discountedPrice: 0,
-              quantity: 1,
-              live: false,
-              stock: true,
-              image: undefined,
-              imagePreview: undefined,
+          // image upload
+          addProductImage(product.image, data.productId)
+            .then((data) => {
+              console.log(data);
+              toast.success("Image uploaded");
+              setProduct({
+                title: "",
+                description: "",
+                price: 0,
+                discountedPrice: 0,
+                quantity: 1,
+                live: false,
+                stock: true,
+                image: undefined,
+                imagePreview: undefined,
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+              toast.error("Error in uploading image");
             });
-          })
-          .catch((error) => {
-            console.log(error);
-            toast.error("Error in uploading image");
-          });
-        toast.success("Product is created !!");
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("Error in creating product !! check product details");
-      });
+          toast.success("Product is created !!");
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("Error in creating product !! check product details");
+        });
+    } else {
+      // call create product within category api
+      createProductInCategory(product, selectedCategoryId)
+        .then((data) => {
+          console.log(data);
+
+          // image upload
+          addProductImage(product.image, data.productId)
+            .then((data) => {
+              console.log(data);
+              toast.success("Image uploaded");
+              setProduct({
+                title: "",
+                description: "",
+                price: 0,
+                discountedPrice: 0,
+                quantity: 1,
+                live: false,
+                stock: true,
+                image: undefined,
+                imagePreview: undefined,
+              });
+              setSelectedCategoryId("none");
+            })
+            .catch((error) => {
+              console.log(error);
+              toast.error("Error in uploading image");
+            });
+          toast.success("Product is created !!");
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("Error in creating product !! check product details");
+        });
+    }
   };
 
   const formView = () => {
@@ -283,6 +335,30 @@ const AddProduct = () => {
                     Clear
                   </Button>
                 </InputGroup>
+              </Form.Group>
+
+              {/* product category */}
+              {/* {JSON.stringify(selectedCategoryId)} */}
+              <Form.Group className="mt-3">
+                <Form.Label>Select Category</Form.Label>
+                <Form.Select
+                  value={selectedCategoryId}
+                  onChange={(event) => {
+                    setSelectedCategoryId(event.target.value);
+                  }}
+                >
+                  <option value="none">NONE</option>
+                  {categories
+                    ? categories.content.map((category) => (
+                        <option
+                          key={category.categoryId}
+                          value={category.categoryId}
+                        >
+                          {category.title}
+                        </option>
+                      ))
+                    : ""}
+                </Form.Select>
               </Form.Group>
 
               <Container className="mt-3 text-center">
