@@ -8,3 +8,12 @@ export const createProductWithoutCategory = (product) => {
     .post("/products", product)
     .then((response) => response.data);
 };
+
+// add product image
+export const addProductImage = (file, productId) => {
+  const formData = new FormData();
+  formData.append("productImage", file);
+  return privateAxios
+    .post(`/products/image/${productId}`, formData)
+    .then((response) => response.data);
+};

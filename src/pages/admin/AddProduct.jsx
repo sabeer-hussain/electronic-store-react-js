@@ -10,7 +10,10 @@ import {
   Row,
 } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { createProductWithoutCategory } from "../../services/ProductService";
+import {
+  addProductImage,
+  createProductWithoutCategory,
+} from "../../services/ProductService";
 
 const AddProduct = () => {
   const [product, setProduct] = useState({
@@ -88,18 +91,29 @@ const AddProduct = () => {
     createProductWithoutCategory(product)
       .then((data) => {
         console.log(data);
+
+        // image upload
+        addProductImage(product.image, data.productId)
+          .then((data) => {
+            console.log(data);
+            toast.success("Image uploaded");
+            setProduct({
+              title: "",
+              description: "",
+              price: 0,
+              discountedPrice: 0,
+              quantity: 1,
+              live: false,
+              stock: true,
+              image: undefined,
+              imagePreview: undefined,
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+            toast.error("Error in uploading image");
+          });
         toast.success("Product is created !!");
-        setProduct({
-          title: "",
-          description: "",
-          price: 0,
-          discountedPrice: 0,
-          quantity: 1,
-          live: false,
-          stock: true,
-          image: undefined,
-          imagePreview: undefined,
-        });
       })
       .catch((error) => {
         console.log(error);
