@@ -16,6 +16,8 @@ import {
   createProductWithoutCategory,
 } from "../../services/ProductService";
 import { getCategories } from "../../services/CategoryService";
+import { useRef } from "react";
+import { Editor } from "@tinymce/tinymce-react";
 
 const AddProduct = () => {
   const [product, setProduct] = useState({
@@ -31,6 +33,9 @@ const AddProduct = () => {
   });
   const [categories, setCategories] = useState(undefined);
   const [selectedCategoryId, setSelectedCategoryId] = useState("none");
+
+  // for rich text editor
+  const editorRef = useRef(null);
 
   useEffect(() => {
     getCategories(0, 1000)
@@ -200,7 +205,8 @@ const AddProduct = () => {
               {/* product description */}
               <Form.Group className="mt-3">
                 <Form.Label>Product Description</Form.Label>
-                <Form.Control
+
+                {/* <Form.Control
                   as={"textarea"}
                   rows={6}
                   placeholder="Enter here"
@@ -211,6 +217,49 @@ const AddProduct = () => {
                       description: event.target.value,
                     })
                   }
+                /> */}
+
+                {/* using tinymce rich text editor */}
+                <Editor
+                  apiKey=""
+                  onInit={(evt, editor) => (editorRef.current = editor)}
+                  init={{
+                    height: 380,
+                    menubar: true,
+                    plugins: [
+                      "advlist",
+                      "autolink",
+                      "lists",
+                      "link",
+                      "image",
+                      "charmap",
+                      "preview",
+                      "anchor",
+                      "searchreplace",
+                      "visualblocks",
+                      "code",
+                      "fullscreen",
+                      "insertdatetime",
+                      "media",
+                      "table",
+                      "code",
+                      "help",
+                      "wordcount",
+                    ],
+                    toolbar:
+                      "undo redo | blocks | " +
+                      "bold italic forecolor | alignleft aligncenter " +
+                      "alignright alignjustify | bullist numlist outdent indent | " +
+                      "removeformat | help",
+                    content_style:
+                      "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                  }}
+                  onEditorChange={() => {
+                    setProduct({
+                      ...product,
+                      description: editorRef.current.getContent(),
+                    });
+                  }}
                 />
               </Form.Group>
 
