@@ -75,6 +75,22 @@ const AddProduct = () => {
     }
   };
 
+  const clearForm = () => {
+    editorRef.current.setContent("");
+    setProduct({
+      title: "",
+      description: "",
+      price: 0,
+      discountedPrice: 0,
+      quantity: 1,
+      live: false,
+      stock: true,
+      image: undefined,
+      imagePreview: undefined,
+    });
+    setSelectedCategoryId("none");
+  };
+
   // handle add product form
   const submitAddProductForm = (event) => {
     event.preventDefault();
@@ -113,29 +129,24 @@ const AddProduct = () => {
       createProductWithoutCategory(product)
         .then((data) => {
           console.log(data);
+          toast.success("Product is created !!");
+
+          if (!product.image) {
+            clearForm();
+            return;
+          }
 
           // image upload
           addProductImage(product.image, data.productId)
             .then((data) => {
               console.log(data);
               toast.success("Image uploaded");
-              setProduct({
-                title: "",
-                description: "",
-                price: 0,
-                discountedPrice: 0,
-                quantity: 1,
-                live: false,
-                stock: true,
-                image: undefined,
-                imagePreview: undefined,
-              });
+              clearForm();
             })
             .catch((error) => {
               console.log(error);
               toast.error("Error in uploading image");
             });
-          toast.success("Product is created !!");
         })
         .catch((error) => {
           console.log(error);
@@ -146,30 +157,24 @@ const AddProduct = () => {
       createProductInCategory(product, selectedCategoryId)
         .then((data) => {
           console.log(data);
+          toast.success("Product is created !!");
+
+          if (!product.image) {
+            clearForm();
+            return;
+          }
 
           // image upload
           addProductImage(product.image, data.productId)
             .then((data) => {
               console.log(data);
               toast.success("Image uploaded");
-              setProduct({
-                title: "",
-                description: "",
-                price: 0,
-                discountedPrice: 0,
-                quantity: 1,
-                live: false,
-                stock: true,
-                image: undefined,
-                imagePreview: undefined,
-              });
-              setSelectedCategoryId("none");
+              clearForm();
             })
             .catch((error) => {
               console.log(error);
               toast.error("Error in uploading image");
             });
-          toast.success("Product is created !!");
         })
         .catch((error) => {
           console.log(error);
@@ -414,7 +419,12 @@ const AddProduct = () => {
                 <Button type="submit" variant="success" size="sm">
                   Add Product
                 </Button>
-                <Button variant="danger" size="sm" className="ms-1">
+                <Button
+                  variant="danger"
+                  size="sm"
+                  className="ms-1"
+                  onClick={clearForm}
+                >
                   Clear Data
                 </Button>
               </Container>
