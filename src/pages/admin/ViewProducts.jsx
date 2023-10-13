@@ -51,26 +51,19 @@ const ViewProducts = () => {
             <Form.Label>Search Product</Form.Label>
             <Form.Control type="text" placeholder="Search here" />
           </Form.Group>
-          <Table
-            className="text-center"
-            striped
-            bordered
-            hover
-            responsive
-            size="sm "
-          >
+          <Table bordered hover responsive size="sm">
             <thead>
-              <tr>
-                <th>#SN</th>
-                <th>Title</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Discounted Price</th>
-                <th>Live</th>
-                <th>Stock</th>
-                <th>Category</th>
-                <th>Added Date</th>
-                <th>Action</th>
+              <tr className="text-center">
+                <th className="small">SN</th>
+                <th className="small">Title</th>
+                <th className="small">Quantity</th>
+                <th className="small">Price</th>
+                <th className="small">Discounted</th>
+                <th className="small">Live</th>
+                <th className="small">Stock</th>
+                <th className="small">Category</th>
+                <th className="small">Date</th>
+                <th className="small">Action</th>
               </tr>
             </thead>
             <tbody>
