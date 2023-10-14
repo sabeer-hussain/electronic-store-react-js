@@ -127,33 +127,41 @@ const ViewProducts = () => {
                     <tbody>
                       <tr>
                         <td>Product Id</td>
-                        <td>{currentProduct.productId}</td>
+                        <td className="fw-bold">{currentProduct.productId}</td>
                       </tr>
                       <tr>
                         <td>Quantity</td>
-                        <td>{currentProduct.quantity}</td>
+                        <td className="fw-bold">{currentProduct.quantity}</td>
                       </tr>
                       <tr>
                         <td>Price</td>
-                        <td>{currentProduct.price}</td>
+                        <td className="fw-bold">{currentProduct.price} ₹</td>
                       </tr>
                       <tr>
                         <td>Discounted Price</td>
-                        <td>{currentProduct.discountedPrice}</td>
+                        <td className="fw-bold">
+                          {currentProduct.discountedPrice} ₹
+                        </td>
                       </tr>
-                      <tr>
+                      <tr className={currentProduct.live ? "" : "table-danger"}>
                         <td>Live</td>
-                        <td>{currentProduct.live ? "True" : "False"}</td>
+                        <td className="fw-bold">
+                          {currentProduct.live ? "True" : "False"}
+                        </td>
                       </tr>
-                      <tr>
+                      <tr
+                        className={currentProduct.stock ? "" : "table-danger"}
+                      >
                         <td>Stock</td>
-                        <td>
+                        <td className="fw-bold">
                           {currentProduct.stock ? "In Stock" : "Not in Stock"}
                         </td>
                       </tr>
                       <tr>
                         <td>Category</td>
-                        <td>{currentProduct.category?.title}</td>
+                        <td className="fw-bold">
+                          {currentProduct.category?.title}
+                        </td>
                       </tr>
                     </tbody>
                   </Table>
