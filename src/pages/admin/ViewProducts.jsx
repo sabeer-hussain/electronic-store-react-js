@@ -3,8 +3,7 @@ import { getAllProducts } from "../../services/ProductService";
 import { toast } from "react-toastify";
 import SingleProductView from "../../components/admin/SingleProductView";
 import { PRODUCT_PAGE_SIZE } from "../../services/HelperService";
-
-const {
+import {
   Card,
   Container,
   Row,
@@ -13,10 +12,21 @@ const {
   Button,
   Form,
   Pagination,
-} = require("react-bootstrap");
+  Modal,
+} from "react-bootstrap";
 
 const ViewProducts = () => {
   const [products, setProducts] = useState(undefined);
+  const [currentProduct, setCurrentProduct] = useState(undefined);
+
+  const [show, setShow] = useState(false);
+
+  const closeProductViewModal = () => setShow(false);
+  const openProductViewModal = (event, product) => {
+    console.log(product);
+    setCurrentProduct(product);
+    setShow(true);
+  };
 
   useEffect(() => {
     getProducts(0, PRODUCT_PAGE_SIZE, "addedDate", "desc");
@@ -45,12 +55,39 @@ const ViewProducts = () => {
   // update product list in parent which is deleted in child
   const updateProductList = (productId) => {
     const existingProducts = products.content.filter(
-      (p) => p.productId != productId
+      (p) => p.productId !== productId
     );
     setProducts({
       ...products,
       content: existingProducts,
     });
+  };
+
+  // modal view
+  const viewProductModalView = () => {
+    return (
+      <>
+        <Modal
+          size="lg"
+          animation={false}
+          show={show}
+          onHide={closeProductViewModal}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={closeProductViewModal}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={openProductViewModal}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
   };
 
   // products view
@@ -86,6 +123,7 @@ const ViewProducts = () => {
                     index={index}
                     product={product}
                     updateProductList={updateProductList}
+                    openProductViewModal={openProductViewModal}
                   />
                 );
               })}
@@ -177,6 +215,8 @@ const ViewProducts = () => {
           <Col>{products ? productsView() : ""}</Col>
         </Row>
       </Container>
+
+      {viewProductModalView()}
     </>
   );
 };

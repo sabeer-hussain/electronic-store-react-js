@@ -6,7 +6,12 @@ import Swal from "sweetalert2";
 import { deleteProduct } from "../../services/ProductService";
 import { toast } from "react-toastify";
 
-const SingleProductView = ({ index, product, updateProductList }) => {
+const SingleProductView = ({
+  index,
+  product,
+  updateProductList,
+  openProductViewModal,
+}) => {
   const formatDate = (time) => {
     return new Date(time).toLocaleDateString();
   };
@@ -69,12 +74,21 @@ const SingleProductView = ({ index, product, updateProductList }) => {
       </td>
       <td className="px-3 small">{formatDate(product.addedDate)}</td>
       <td className="px-3 small d-flex table-light">
-        <Button variant="warning" size="sm">
+        {/* view button */}
+        <Button
+          variant="warning"
+          size="sm"
+          onClick={(event) => {
+            openProductViewModal(event, product);
+          }}
+        >
           <GrFormView />
         </Button>
+        {/* update button */}
         <Button className="ms-2" variant="dark" size="sm">
           <BsFillPencilFill />
         </Button>
+        {/* delete button */}
         <Button
           className="ms-2"
           variant="danger"
