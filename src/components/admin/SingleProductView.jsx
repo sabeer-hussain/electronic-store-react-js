@@ -35,7 +35,7 @@ const SingleProductView = ({ index, product }) => {
         {product.category ? product.category.title : ""}
       </td>
       <td className="px-3 small">{formatDate(product.addedDate)}</td>
-      <td className="px-3 small d-flex">
+      <td className="px-3 small d-flex table-light">
         <Button variant="warning" size="sm">
           <GrFormView />
         </Button>
