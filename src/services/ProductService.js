@@ -1,4 +1,6 @@
+import { getTokenFromLocalStorage } from "../auth/HelperAuth";
 import { privateAxios } from "./AxiosService";
+import { BASE_URL } from "./HelperService";
 
 // product related api calls
 
@@ -37,6 +39,36 @@ export const getAllProducts = (
       `/products?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`
     )
     .then((response) => response.data);
+};
+
+// serve product image
+export const getProductImage = async (productId) => {
+  const jwtToken = getTokenFromLocalStorage();
+  const productImage = await fetch(
+    `${BASE_URL}/products/image/${productId}?${new Date().getTime()}`,
+    {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    }
+  )
+    .then(getBase64Image)
+    .then((imgString) => imgString);
+
+  return productImage;
+};
+
+const getBase64Image = async (res) => {
+  const blob = await res.blob();
+
+  const reader = new FileReader();
+
+  await new Promise((resolve, reject) => {
+    reader.onload = resolve;
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+  return reader.result;
 };
 
 // delete the product
