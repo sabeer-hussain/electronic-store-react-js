@@ -42,6 +42,17 @@ const ViewProducts = () => {
       });
   };
 
+  // update product list in parent which is deleted in child
+  const updateProductList = (productId) => {
+    const existingProducts = products.content.filter(
+      (p) => p.productId != productId
+    );
+    setProducts({
+      ...products,
+      content: existingProducts,
+    });
+  };
+
   // products view
   const productsView = () => {
     return (
@@ -74,6 +85,7 @@ const ViewProducts = () => {
                     key={product.productId}
                     index={index}
                     product={product}
+                    updateProductList={updateProductList}
                   />
                 );
               })}

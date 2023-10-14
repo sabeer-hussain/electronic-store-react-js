@@ -2,8 +2,11 @@ import { Button } from "react-bootstrap";
 import { BsFillPencilFill } from "react-icons/bs";
 import { GrFormView } from "react-icons/gr";
 import { MdDelete } from "react-icons/md";
+import Swal from "sweetalert2";
+import { deleteProduct } from "../../services/ProductService";
+import { toast } from "react-toastify";
 
-const SingleProductView = ({ index, product }) => {
+const SingleProductView = ({ index, product, updateProductList }) => {
   const formatDate = (time) => {
     return new Date(time).toLocaleDateString();
   };
@@ -20,6 +23,36 @@ const SingleProductView = ({ index, product }) => {
       return "table-warning";
     } else {
     }
+  };
+
+  // deleteProduct
+  const handleDeleteProduct = () => {
+    // sweet alert:
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // api call
+        deleteProduct(product.productId)
+          .then((data) => {
+            console.log(data);
+            // Swal.fire("Deleted!", "Product has been deleted.", "success");
+            toast.success("Product Deleted");
+
+            updateProductList(product.productId);
+          })
+          .catch((error) => {
+            console.log(error);
+            toast.error("Error in deleting product");
+          });
+      }
+    });
   };
 
   return (
@@ -42,7 +75,12 @@ const SingleProductView = ({ index, product }) => {
         <Button className="ms-2" variant="dark" size="sm">
           <BsFillPencilFill />
         </Button>
-        <Button className="ms-2" variant="danger" size="sm">
+        <Button
+          className="ms-2"
+          variant="danger"
+          size="sm"
+          onClick={(event) => handleDeleteProduct(product.productId)}
+        >
           <MdDelete />
         </Button>
       </td>
