@@ -17,6 +17,7 @@ import {
 import UserContext from "../../context/UserContext";
 import { useContext } from "react";
 import defaultImage from "../../assets/default_profile.jpg";
+import ShowHtml from "../../components/ShowHtml";
 
 const ViewProducts = () => {
   const userContext = useContext(UserContext);
@@ -167,12 +168,19 @@ const ViewProducts = () => {
                   </Table>
 
                   {/* description */}
-                  <div
+
+                  {/* converts html string to html/jsx element using dangerouslySetInnterHTML attribute */}
+                  {/* <div
                     className="p-3 border border-1"
                     dangerouslySetInnerHTML={{
                       __html: currentProduct.description,
                     }}
-                  ></div>
+                  ></div> */}
+
+                  {/* converts/parse html string to jsx element using parse() method of html-react-parser */}
+                  <div className="p-3 border border-1">
+                    <ShowHtml htmlText={currentProduct.description} />
+                  </div>
                 </Card.Body>
               </Card>
             </Modal.Body>
