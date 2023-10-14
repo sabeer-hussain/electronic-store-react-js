@@ -26,6 +26,7 @@ const ViewProducts = () => {
   const [currentProduct, setCurrentProduct] = useState(undefined);
   const [productImage, setProductImage] = useState(undefined);
 
+  // view product state variables and functions
   const [show, setShow] = useState(false);
 
   const closeProductViewModal = () => {
@@ -38,6 +39,23 @@ const ViewProducts = () => {
     setCurrentProduct(product);
     setShow(true);
   };
+
+  // #END view product modal state variables and functions
+
+  // edit product state variables and functions
+  const [showEditModal, setShowEditModal] = useState(false);
+
+  const closeEditProductModal = () => {
+    setProductImage(undefined);
+    setShowEditModal(false);
+  };
+
+  const openEditProductModal = (event, product) => {
+    setCurrentProduct(product);
+    setShowEditModal(true);
+  };
+
+  // #END edit product state variables and functions
 
   useEffect(() => {
     getProducts(0, PRODUCT_PAGE_SIZE, "addedDate", "desc");
@@ -198,6 +216,33 @@ const ViewProducts = () => {
     );
   };
 
+  // edit product modal
+  const editProductModalView = () => {
+    return (
+      <>
+        <Modal
+          size="xl"
+          animation={false}
+          show={showEditModal}
+          onHide={closeEditProductModal}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={closeEditProductModal}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={closeEditProductModal}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
+  };
+
   // products view
   const productsView = () => {
     return (
@@ -232,6 +277,7 @@ const ViewProducts = () => {
                     product={product}
                     updateProductList={updateProductList}
                     openProductViewModal={openProductViewModal}
+                    openEditProductModal={openEditProductModal}
                   />
                 );
               })}
@@ -325,6 +371,7 @@ const ViewProducts = () => {
       </Container>
 
       {viewProductModalView()}
+      {editProductModalView()}
     </>
   );
 };

@@ -11,6 +11,7 @@ const SingleProductView = ({
   product,
   updateProductList,
   openProductViewModal,
+  openEditProductModal,
 }) => {
   const formatDate = (time) => {
     return new Date(time).toLocaleDateString();
@@ -85,7 +86,14 @@ const SingleProductView = ({
           <GrFormView />
         </Button>
         {/* update button */}
-        <Button className="ms-2" variant="dark" size="sm">
+        <Button
+          className="ms-2"
+          variant="dark"
+          size="sm"
+          onClick={(event) => {
+            openEditProductModal(event, product);
+          }}
+        >
           <BsFillPencilFill />
         </Button>
         {/* delete button */}
