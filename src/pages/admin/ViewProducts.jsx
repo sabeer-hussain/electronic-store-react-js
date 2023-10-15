@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   getAllProducts,
   getProductImage,
+  updateCategoryOfProduct,
   updateProduct,
   updateProductImage,
 } from "../../services/ProductService";
@@ -42,6 +43,7 @@ const ViewProducts = () => {
     image: undefined,
     imagePreview: undefined,
   });
+  const [categoryChangeId, setCategoryChangeId] = useState(undefined);
 
   // view product state variables and functions
   const [show, setShow] = useState(false);
@@ -186,6 +188,40 @@ const ViewProducts = () => {
             .catch((error) => {
               console.log(error);
               toast.error("Error in updating image", {
+                position: "top-right",
+              });
+            });
+        }
+
+        // category update
+        if (
+          categoryChangeId !== "none" &&
+          categoryChangeId !== currentProduct.category?.categoryId
+        ) {
+          updateCategoryOfProduct(categoryChangeId, currentProduct.productId)
+            .then((catData) => {
+              console.log(catData);
+              toast.success("Category Updated", {
+                position: "top-right",
+              });
+              setCurrentProduct({
+                ...currentProduct,
+                category: catData.category,
+              });
+              const newArray = products.content.map((product) => {
+                if (product.productId === currentProduct.productId) {
+                  return catData;
+                }
+                return product;
+              });
+              setProducts({
+                ...products,
+                content: newArray,
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+              toast.error("Error in updating category", {
                 position: "top-right",
               });
             });
@@ -561,10 +597,15 @@ const ViewProducts = () => {
                 </Form.Group>
 
                 {/* product category */}
-                {/* {JSON.stringify(currentProduct.category?.categoryId)} */}
+                {/* {JSON.stringify(categoryChangeId)} */}
                 <Form.Group className="mt-3">
                   <Form.Label>Select Category</Form.Label>
-                  <Form.Select>
+                  <Form.Select
+                    value={currentProduct.categoryId}
+                    onChange={(event) => {
+                      setCategoryChangeId(event.target.value);
+                    }}
+                  >
                     <option value="none">NONE</option>
                     {categories &&
                       categories.content.map((cat) => {

@@ -93,3 +93,10 @@ export const updateProductImage = (file, productId) => {
     .put(`/products/image/${productId}`, formData)
     .then((response) => response.data);
 };
+
+// update the category of the product
+export const updateCategoryOfProduct = (categoryId, productId) => {
+  return privateAxios
+    .put(`/categories/${categoryId}/products/${productId}`)
+    .then((response) => response.data);
+};
