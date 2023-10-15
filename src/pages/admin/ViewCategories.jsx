@@ -255,7 +255,7 @@ const ViewCategories = () => {
           .then((data) => {
             Swal.fire("Deleted!", "Category has been deleted.", "success");
             const existingCategories = categories.content.filter(
-              (c) => c.categoryId != categoryId
+              (c) => c.categoryId !== categoryId
             );
             setCategories({
               ...categories,
