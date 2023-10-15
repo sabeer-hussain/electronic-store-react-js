@@ -100,3 +100,10 @@ export const updateCategoryOfProduct = (categoryId, productId) => {
     .put(`/categories/${categoryId}/products/${productId}`)
     .then((response) => response.data);
 };
+
+// search products
+export const searchProducts = (query) => {
+  return privateAxios
+    .get(`/products/search/${query}`)
+    .then((response) => response.data);
+};

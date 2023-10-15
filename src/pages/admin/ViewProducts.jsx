@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   getAllProducts,
   getProductImage,
+  searchProducts,
   updateCategoryOfProduct,
   updateProduct,
   updateProductImage,
@@ -33,6 +34,7 @@ import { getCategories } from "../../services/CategoryService";
 const ViewProducts = () => {
   const userContext = useContext(UserContext);
 
+  const [previousProducts, setPreviousProducts] = useState(undefined);
   const [products, setProducts] = useState(undefined);
   const [currentProduct, setCurrentProduct] = useState(undefined);
   const [productImage, setProductImage] = useState(undefined);
@@ -44,6 +46,7 @@ const ViewProducts = () => {
     imagePreview: undefined,
   });
   const [categoryChangeId, setCategoryChangeId] = useState(undefined);
+  const [searchQuery, setSearchQuery] = useState("");
 
   // view product state variables and functions
   const [show, setShow] = useState(false);
@@ -643,6 +646,30 @@ const ViewProducts = () => {
     );
   };
 
+  // search product
+  const handleSearchProducts = () => {
+    if (searchQuery === undefined || searchQuery.trim() === "") {
+      return;
+    }
+
+    // call server api to search
+    searchProducts(searchQuery)
+      .then((data) => {
+        if (data.content.length <= 0) {
+          toast.info("No result found");
+          return;
+        }
+        setPreviousProducts(products);
+        setProducts(data);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Error in serching the products", {
+          position: "top-right",
+        });
+      });
+  };
+
   // products view
   const productsView = () => {
     return (
@@ -651,7 +678,27 @@ const ViewProducts = () => {
           <h5 className="mb-3">View Products</h5>
           <Form.Group className="mb-2">
             <Form.Label>Search Product</Form.Label>
-            <Form.Control type="text" placeholder="Search here" />
+            <InputGroup>
+              <Form.Control
+                type="text"
+                placeholder="Search here"
+                onChange={(event) => {
+                  if (event.target.value.trim() === "") {
+                    if (previousProducts) {
+                      setProducts(previousProducts);
+                    }
+                  }
+                  setSearchQuery(event.target.value);
+                }}
+                value={searchQuery}
+              />
+              <Button
+                variant="outline-secondary"
+                onClick={handleSearchProducts}
+              >
+                Search
+              </Button>
+            </InputGroup>
           </Form.Group>
           <Table bordered hover responsive size="sm">
             <thead>
