@@ -13,11 +13,16 @@ import {
   Form,
   Pagination,
   Modal,
+  FormGroup,
+  InputGroup,
 } from "react-bootstrap";
 import UserContext from "../../context/UserContext";
 import { useContext } from "react";
 import defaultImage from "../../assets/default_profile.jpg";
 import ShowHtml from "../../components/ShowHtml";
+import { Editor } from "@tinymce/tinymce-react";
+import { useRef } from "react";
+import { getCategories } from "../../services/CategoryService";
 
 const ViewProducts = () => {
   const userContext = useContext(UserContext);
@@ -25,6 +30,9 @@ const ViewProducts = () => {
   const [products, setProducts] = useState(undefined);
   const [currentProduct, setCurrentProduct] = useState(undefined);
   const [productImage, setProductImage] = useState(undefined);
+  // for rich text editor
+  const editorRef = useRef(null);
+  const [categories, setCategories] = useState(undefined);
 
   // view product state variables and functions
   const [show, setShow] = useState(false);
@@ -66,6 +74,18 @@ const ViewProducts = () => {
       getProductImageFromServer();
     }
   }, [currentProduct]);
+
+  useEffect(() => {
+    getCategories(0, 1000)
+      .then((data) => {
+        console.log(data);
+        setCategories({ ...data });
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Error in loading categories");
+      });
+  }, []);
 
   const getProducts = (
     pageNumber = 0,
@@ -216,30 +236,191 @@ const ViewProducts = () => {
     );
   };
 
-  // edit product modal
+  // edit/update product modal
   const editProductModalView = () => {
     return (
-      <>
-        <Modal
-          size="xl"
-          animation={false}
-          show={showEditModal}
-          onHide={closeEditProductModal}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={closeEditProductModal}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={closeEditProductModal}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </>
+      currentProduct && (
+        <>
+          <Modal
+            size="xl"
+            animation={false}
+            show={showEditModal}
+            onHide={closeEditProductModal}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Update Product Here</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                {/* product title */}
+                <FormGroup className="mt-3">
+                  <Form.Label>Product Title</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter here"
+                    value={currentProduct.title}
+                  />
+                </FormGroup>
+
+                {/* product description */}
+                <Form.Group className="mt-3">
+                  <Form.Label>Product Description</Form.Label>
+                  {/* using tinymce rich text editor */}
+                  <Editor
+                    apiKey=""
+                    onInit={(evt, editor) => (editorRef.current = editor)}
+                    init={{
+                      height: 380,
+                      menubar: true,
+                      plugins: [
+                        "advlist",
+                        "autolink",
+                        "lists",
+                        "link",
+                        "image",
+                        "charmap",
+                        "preview",
+                        "anchor",
+                        "searchreplace",
+                        "visualblocks",
+                        "code",
+                        "fullscreen",
+                        "insertdatetime",
+                        "media",
+                        "table",
+                        "code",
+                        "help",
+                        "wordcount",
+                      ],
+                      toolbar:
+                        "undo redo | blocks | " +
+                        "bold italic forecolor | alignleft aligncenter " +
+                        "alignright alignjustify | bullist numlist outdent indent | " +
+                        "removeformat | help",
+                      content_style:
+                        "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                    }}
+                    value={currentProduct.description}
+                  />
+                </Form.Group>
+
+                <Row>
+                  <Col>
+                    {/* product price */}
+                    <Form.Group className="mt-3">
+                      <Form.Label>Price</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter here"
+                        value={currentProduct.price}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    {/* product discounted price */}
+                    <Form.Group className="mt-3">
+                      <Form.Label>Discounted Price</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter here"
+                        value={currentProduct.discountedPrice}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
+
+                {/* product quantity */}
+                <Form.Group className="mt-3">
+                  <Form.Label>Product Quantity</Form.Label>
+                  <Form.Control
+                    type="number"
+                    placeholder="Enter here"
+                    value={currentProduct.quantity}
+                  />
+                </Form.Group>
+
+                <Row className="mt-3 px-1">
+                  <Col>
+                    {/* product is in live or not */}
+                    <Form.Check
+                      type="switch"
+                      label={"Live"}
+                      checked={currentProduct.live}
+                    />
+                  </Col>
+                  <Col>
+                    {/* product is in stock or not */}
+                    <Form.Check
+                      type="switch"
+                      label={"Stock"}
+                      checked={currentProduct.stock}
+                    />
+                  </Col>
+                </Row>
+
+                {/* product image */}
+                <Form.Group className="my-5">
+                  <Container className="text-center py-4 border border-2">
+                    <p className="text-muted">Image Preview</p>
+                    <img
+                      src={productImage}
+                      alt=""
+                      className="img-fluid"
+                      style={{ maxHeight: "250px" }}
+                    />
+                  </Container>
+                  <Form.Label>Select product image</Form.Label>
+                  <InputGroup>
+                    <Form.Control type={"file"} />
+                    <Button variant="outline-secondary">Clear</Button>
+                  </InputGroup>
+                </Form.Group>
+
+                {/* product category */}
+                {/* {JSON.stringify(currentProduct.category?.categoryId)} */}
+                <Form.Group className="mt-3">
+                  <Form.Label>Select Category</Form.Label>
+                  <Form.Select>
+                    <option value="none">NONE</option>
+                    {categories &&
+                      categories.content.map((cat) => {
+                        return (
+                          <option
+                            selected={
+                              cat.categoryId ===
+                              currentProduct.category?.categoryId
+                            }
+                            key={cat.categoryId}
+                            value={cat.categoryId}
+                          >
+                            {cat.title}
+                          </option>
+                        );
+                      })}
+                  </Form.Select>
+                </Form.Group>
+
+                <Container className="mt-3 text-center">
+                  <Button type="submit" variant="success" size="sm">
+                    Update Product
+                  </Button>
+                  <Button variant="danger" size="sm" className="ms-1">
+                    Clear Data
+                  </Button>
+                </Container>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={closeEditProductModal}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={closeEditProductModal}>
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </>
+      )
     );
   };
 
