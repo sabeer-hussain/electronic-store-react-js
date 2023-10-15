@@ -3,6 +3,7 @@ import {
   getAllProducts,
   getProductImage,
   updateProduct,
+  updateProductImage,
 } from "../../services/ProductService";
 import { toast } from "react-toastify";
 import SingleProductView from "../../components/admin/SingleProductView";
@@ -37,6 +38,10 @@ const ViewProducts = () => {
   // for rich text editor
   const editorRef = useRef(null);
   const [categories, setCategories] = useState(undefined);
+  const [imageUpdate, setImageUpdate] = useState({
+    image: undefined,
+    imagePreview: undefined,
+  });
 
   // view product state variables and functions
   const [show, setShow] = useState(false);
@@ -157,7 +162,34 @@ const ViewProducts = () => {
     updateProduct(currentProduct, currentProduct.productId)
       .then((data) => {
         console.log(data);
-        toast.success("Product is created !!");
+        toast.success("Product is updated !!", {
+          position: "top-right",
+        });
+
+        // update image also...
+        if (imageUpdate.image && imageUpdate.imagePreview) {
+          updateProductImage(imageUpdate.image, currentProduct.productId)
+            .then((imageData) => {
+              console.log(imageData);
+              setCurrentProduct({
+                ...currentProduct,
+                productImageName: imageData.imageName,
+              });
+              toast.success("Image updated", {
+                position: "top-right",
+              });
+              setImageUpdate({
+                image: undefined,
+                imagePreview: undefined,
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+              toast.error("Error in updating image", {
+                position: "top-right",
+              });
+            });
+        }
 
         const newArray = products.content.map((product) => {
           if (product.productId === currentProduct.productId) {
@@ -174,6 +206,30 @@ const ViewProducts = () => {
         console.log(error);
         toast.error("Error in updating product !! check product details");
       });
+  };
+
+  // handle update file change
+  const handleFileChange = (event) => {
+    if (
+      event.target.files[0].type === "image/png" ||
+      event.target.files[0].type === "image/jpeg"
+    ) {
+      // preview show
+      const reader = new FileReader();
+      reader.onload = (r) => {
+        setImageUpdate({
+          imagePreview: r.target.result,
+          image: event.target.files[0],
+        });
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    } else {
+      toast.error("Invalid File !!");
+      setImageUpdate({
+        image: undefined,
+        imagePreview: undefined,
+      });
+    }
   };
 
   // update product list in parent which is deleted in child
@@ -474,7 +530,11 @@ const ViewProducts = () => {
                   <Container className="text-center py-4 border border-2">
                     <p className="text-muted">Image Preview</p>
                     <img
-                      src={productImage}
+                      src={
+                        imageUpdate.imagePreview
+                          ? imageUpdate.imagePreview
+                          : productImage
+                      }
                       alt=""
                       className="img-fluid"
                       style={{ maxHeight: "250px" }}
@@ -482,8 +542,21 @@ const ViewProducts = () => {
                   </Container>
                   <Form.Label>Select product image</Form.Label>
                   <InputGroup>
-                    <Form.Control type={"file"} />
-                    <Button variant="outline-secondary">Clear</Button>
+                    <Form.Control
+                      type={"file"}
+                      onChange={(event) => handleFileChange(event)}
+                    />
+                    <Button
+                      variant="outline-secondary"
+                      onClick={(event) => {
+                        setImageUpdate({
+                          imagePreview: undefined,
+                          image: undefined,
+                        });
+                      }}
+                    >
+                      Clear
+                    </Button>
                   </InputGroup>
                 </Form.Group>
 

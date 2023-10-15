@@ -84,3 +84,12 @@ export const updateProduct = (product, productId) => {
     .put(`/products/${productId}`, product)
     .then((response) => response.data);
 };
+
+// update product image
+export const updateProductImage = (file, productId) => {
+  const formData = new FormData();
+  formData.append("productImage", file);
+  return privateAxios
+    .put(`/products/image/${productId}`, formData)
+    .then((response) => response.data);
+};
