@@ -77,3 +77,10 @@ export const deleteProduct = (productId) => {
     .delete(`/products/${productId}`)
     .then((response) => response.data);
 };
+
+// update product service
+export const updateProduct = (product, productId) => {
+  return privateAxios
+    .put(`/products/${productId}`, product)
+    .then((response) => response.data);
+};

@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { getAllProducts, getProductImage } from "../../services/ProductService";
+import {
+  getAllProducts,
+  getProductImage,
+  updateProduct,
+} from "../../services/ProductService";
 import { toast } from "react-toastify";
 import SingleProductView from "../../components/admin/SingleProductView";
 import { PRODUCT_PAGE_SIZE } from "../../services/HelperService";
@@ -110,6 +114,66 @@ const ViewProducts = () => {
   const getProductImageFromServer = async () => {
     // api call
     setProductImage(await getProductImage(currentProduct.productId));
+  };
+
+  // handle update product form
+  const handleUpdateFormSubmit = (event) => {
+    event.preventDefault();
+    console.log(currentProduct);
+
+    // client side validations
+    if (
+      currentProduct.title === undefined ||
+      currentProduct.title.trim() === ""
+    ) {
+      toast.error("Title is required !!");
+      return;
+    }
+    if (
+      currentProduct.description === undefined ||
+      currentProduct.description.trim() === ""
+    ) {
+      toast.error("Description required !!");
+      return;
+    }
+    if (currentProduct.price <= 0) {
+      toast.error("Invalid Price !!");
+      return;
+    }
+    if (
+      currentProduct.discountedPrice <= 0 ||
+      currentProduct.discountedPrice >= currentProduct.price
+    ) {
+      toast.error("Invalid Discounted Price !!");
+      return;
+    }
+    if (currentProduct.quantity <= 0) {
+      toast.error("Invalid Quantity !!");
+      return;
+    }
+    // remaining validations (validate data) if any
+
+    // form submit: api call
+    updateProduct(currentProduct, currentProduct.productId)
+      .then((data) => {
+        console.log(data);
+        toast.success("Product is created !!");
+
+        const newArray = products.content.map((product) => {
+          if (product.productId === currentProduct.productId) {
+            return data;
+          }
+          return product;
+        });
+        setProducts({
+          ...products,
+          content: newArray,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Error in updating product !! check product details");
+      });
   };
 
   // update product list in parent which is deleted in child
@@ -251,7 +315,8 @@ const ViewProducts = () => {
               <Modal.Title>Update Product Here</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form>
+              {/* {JSON.stringify(currentProduct)} */}
+              <Form onSubmit={handleUpdateFormSubmit}>
                 {/* product title */}
                 <FormGroup className="mt-3">
                   <Form.Label>Product Title</Form.Label>
@@ -259,6 +324,12 @@ const ViewProducts = () => {
                     type="text"
                     placeholder="Enter here"
                     value={currentProduct.title}
+                    onChange={(event) =>
+                      setCurrentProduct({
+                        ...currentProduct,
+                        title: event.target.value,
+                      })
+                    }
                   />
                 </FormGroup>
 
@@ -301,6 +372,12 @@ const ViewProducts = () => {
                         "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
                     }}
                     value={currentProduct.description}
+                    onEditorChange={(event) => {
+                      setCurrentProduct({
+                        ...currentProduct,
+                        description: editorRef.current.getContent(),
+                      });
+                    }}
                   />
                 </Form.Group>
 
@@ -313,6 +390,12 @@ const ViewProducts = () => {
                         type="number"
                         placeholder="Enter here"
                         value={currentProduct.price}
+                        onChange={(event) =>
+                          setCurrentProduct({
+                            ...currentProduct,
+                            price: event.target.value,
+                          })
+                        }
                       />
                     </Form.Group>
                   </Col>
@@ -324,6 +407,16 @@ const ViewProducts = () => {
                         type="number"
                         placeholder="Enter here"
                         value={currentProduct.discountedPrice}
+                        onChange={(event) => {
+                          if (event.target.value > currentProduct.price) {
+                            toast.error("Invalid Discount value !!");
+                            return;
+                          }
+                          setCurrentProduct({
+                            ...currentProduct,
+                            discountedPrice: event.target.value,
+                          });
+                        }}
                       />
                     </Form.Group>
                   </Col>
@@ -336,6 +429,12 @@ const ViewProducts = () => {
                     type="number"
                     placeholder="Enter here"
                     value={currentProduct.quantity}
+                    onChange={(event) =>
+                      setCurrentProduct({
+                        ...currentProduct,
+                        quantity: event.target.value,
+                      })
+                    }
                   />
                 </Form.Group>
 
@@ -346,6 +445,12 @@ const ViewProducts = () => {
                       type="switch"
                       label={"Live"}
                       checked={currentProduct.live}
+                      onChange={(event) => {
+                        setCurrentProduct({
+                          ...currentProduct,
+                          live: event.target.checked,
+                        });
+                      }}
                     />
                   </Col>
                   <Col>
@@ -354,6 +459,12 @@ const ViewProducts = () => {
                       type="switch"
                       label={"Stock"}
                       checked={currentProduct.stock}
+                      onChange={(event) => {
+                        setCurrentProduct({
+                          ...currentProduct,
+                          stock: event.target.checked,
+                        });
+                      }}
                     />
                   </Col>
                 </Row>
@@ -402,10 +513,7 @@ const ViewProducts = () => {
 
                 <Container className="mt-3 text-center">
                   <Button type="submit" variant="success" size="sm">
-                    Update Product
-                  </Button>
-                  <Button variant="danger" size="sm" className="ms-1">
-                    Clear Data
+                    Update Details
                   </Button>
                 </Container>
               </Form>
@@ -413,9 +521,6 @@ const ViewProducts = () => {
             <Modal.Footer>
               <Button variant="secondary" onClick={closeEditProductModal}>
                 Close
-              </Button>
-              <Button variant="primary" onClick={closeEditProductModal}>
-                Save Changes
               </Button>
             </Modal.Footer>
           </Modal>
