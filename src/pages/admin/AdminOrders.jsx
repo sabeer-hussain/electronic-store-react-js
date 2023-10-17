@@ -35,8 +35,8 @@ const AdminOrders = () => {
       <Card className="shadow-sm">
         <Card.Body>
           <h3 className="my-4 mx-2">All Orders are here</h3>
-          {fakeOrders.map((o) => {
-            return <SingleOrderView />;
+          {ordersData.content.map((order) => {
+            return <SingleOrderView order={order} />;
           })}
         </Card.Body>
       </Card>
@@ -47,7 +47,7 @@ const AdminOrders = () => {
     <>
       <Container>
         <Row>
-          <Col>{ordersView()}</Col>
+          <Col>{ordersData && ordersView()}</Col>
         </Row>
       </Container>
     </>
