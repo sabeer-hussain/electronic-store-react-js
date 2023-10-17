@@ -52,7 +52,6 @@ const ViewProducts = () => {
   const [show, setShow] = useState(false);
 
   const closeProductViewModal = () => {
-    setProductImage(undefined);
     setShow(false);
   };
 
@@ -68,7 +67,6 @@ const ViewProducts = () => {
   const [showEditModal, setShowEditModal] = useState(false);
 
   const closeEditProductModal = () => {
-    setProductImage(undefined);
     setShowEditModal(false);
   };
 
