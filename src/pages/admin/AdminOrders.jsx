@@ -275,6 +275,19 @@ const AdminOrders = () => {
       toast.success("Order details update", {
         position: "top-right",
       });
+
+      const newList = ordersData.content.map((orderData) => {
+        if (orderData.orderId === selectedOrder.orderId) {
+          return data;
+        } else {
+          return orderData;
+        }
+      });
+
+      setOrdersData({
+        ...ordersData,
+        content: newList,
+      });
     } catch (error) {
       console.log(error);
       toast.error("Order not updated");
@@ -296,130 +309,142 @@ const AdminOrders = () => {
               <Modal.Title>Update Order</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form onSubmit={handleOrderUpdate}>
-                {/* billing name */}
-                <Form.Group>
-                  <Form.Label>Billing Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={selectedOrder.billingName}
-                    onChange={(event) => {
-                      setSelectedOrder({
-                        ...selectedOrder,
-                        billingName: event.target.value,
-                      });
-                    }}
-                  />
-                </Form.Group>
+              <Card className="border border-0 shadow-sm">
+                <Card.Body>
+                  <Form onSubmit={handleOrderUpdate}>
+                    {/* billing name */}
+                    <Form.Group>
+                      <Form.Label>Billing Name</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={selectedOrder.billingName}
+                        onChange={(event) => {
+                          setSelectedOrder({
+                            ...selectedOrder,
+                            billingName: event.target.value,
+                          });
+                        }}
+                      />
+                    </Form.Group>
 
-                {/* billing phone */}
-                <Form.Group className="mt-3">
-                  <Form.Label>Billing Phone</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={selectedOrder.billingPhone}
-                    onChange={(event) => {
-                      setSelectedOrder({
-                        ...selectedOrder,
-                        billingPhone: event.target.value,
-                      });
-                    }}
-                  />
-                </Form.Group>
+                    {/* billing phone */}
+                    <Form.Group className="mt-3">
+                      <Form.Label>Billing Phone</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={selectedOrder.billingPhone}
+                        onChange={(event) => {
+                          setSelectedOrder({
+                            ...selectedOrder,
+                            billingPhone: event.target.value,
+                          });
+                        }}
+                      />
+                    </Form.Group>
 
-                {/* billing address */}
-                <Form.Group className="mt-3">
-                  <Form.Label>Billing Address</Form.Label>
-                  <Form.Control
-                    as={"textarea"}
-                    rows={5}
-                    value={selectedOrder.billingAddress}
-                    onChange={(event) => {
-                      setSelectedOrder({
-                        ...selectedOrder,
-                        billingAddress: event.target.value,
-                      });
-                    }}
-                  />
-                </Form.Group>
+                    {/* billing address */}
+                    <Form.Group className="mt-3">
+                      <Form.Label>Billing Address</Form.Label>
+                      <Form.Control
+                        as={"textarea"}
+                        rows={5}
+                        value={selectedOrder.billingAddress}
+                        onChange={(event) => {
+                          setSelectedOrder({
+                            ...selectedOrder,
+                            billingAddress: event.target.value,
+                          });
+                        }}
+                      />
+                    </Form.Group>
 
-                {/* payment status */}
-                <Form.Group className="mt-3">
-                  <Form.Label>Payment Status</Form.Label>
-                  <Form.Select
-                    onChange={(event) => {
-                      setSelectedOrder({
-                        ...selectedOrder,
-                        paymentStatus: event.target.value,
-                      });
-                    }}
-                  >
-                    <option
-                      selected={selectedOrder.paymentStatus === "NOT_PAID"}
-                      value="NOT_PAID"
-                    >
-                      NOT PAID
-                    </option>
-                    <option
-                      selected={selectedOrder.paymentStatus === "PAID"}
-                      value="PAID"
-                    >
-                      PAID
-                    </option>
-                  </Form.Select>
-                </Form.Group>
+                    {/* payment status */}
+                    <Form.Group className="mt-3">
+                      <Form.Label>Payment Status</Form.Label>
+                      <Form.Select
+                        onChange={(event) => {
+                          setSelectedOrder({
+                            ...selectedOrder,
+                            paymentStatus: event.target.value,
+                          });
+                        }}
+                      >
+                        <option
+                          selected={selectedOrder.paymentStatus === "NOT_PAID"}
+                          value="NOT_PAID"
+                        >
+                          NOT PAID
+                        </option>
+                        <option
+                          selected={selectedOrder.paymentStatus === "PAID"}
+                          value="PAID"
+                        >
+                          PAID
+                        </option>
+                      </Form.Select>
+                    </Form.Group>
 
-                {/* order status */}
-                <Form.Group className="mt-3">
-                  <Form.Label>Order Status</Form.Label>
-                  <Form.Select
-                    onChange={(event) => {
-                      setSelectedOrder({
-                        ...selectedOrder,
-                        orderStatus: event.target.value,
-                      });
-                    }}
-                  >
-                    <option
-                      selected={selectedOrder.orderStatus === "PENDING"}
-                      value="PENDING"
-                    >
-                      PENDING
-                    </option>
-                    <option
-                      selected={selectedOrder.orderStatus === "DISPATCHED"}
-                      value="DISPATCHED"
-                    >
-                      DISPATCHED
-                    </option>
-                    <option
-                      selected={selectedOrder.orderStatus === "ONWAY"}
-                      value="ONWAY"
-                    >
-                      ONWAY
-                    </option>
-                    <option
-                      selected={selectedOrder.orderStatus === "DELIVERED"}
-                      value="DELIVERED"
-                    >
-                      DELIVERED
-                    </option>
-                  </Form.Select>
-                </Form.Group>
+                    {/* order status */}
+                    <Form.Group className="mt-3">
+                      <Form.Label>Order Status</Form.Label>
+                      <Form.Select
+                        onChange={(event) => {
+                          setSelectedOrder({
+                            ...selectedOrder,
+                            orderStatus: event.target.value,
+                          });
+                        }}
+                      >
+                        <option
+                          selected={selectedOrder.orderStatus === "PENDING"}
+                          value="PENDING"
+                        >
+                          PENDING
+                        </option>
+                        <option
+                          selected={selectedOrder.orderStatus === "DISPATCHED"}
+                          value="DISPATCHED"
+                        >
+                          DISPATCHED
+                        </option>
+                        <option
+                          selected={selectedOrder.orderStatus === "ONWAY"}
+                          value="ONWAY"
+                        >
+                          ONWAY
+                        </option>
+                        <option
+                          selected={selectedOrder.orderStatus === "DELIVERED"}
+                          value="DELIVERED"
+                        >
+                          DELIVERED
+                        </option>
+                      </Form.Select>
+                    </Form.Group>
 
-                {/* order delivered date */}
-                <Form.Group className="mt-3">
-                  <Form.Label>Select Date</Form.Label>
-                  <Form.Control type="text" />
-                  <p className="text-muted">Format : DD/MM/YYYY</p>
-                </Form.Group>
+                    {/* order delivered date */}
+                    <Form.Group className="mt-3">
+                      <Form.Label>Select Date</Form.Label>
+                      <Form.Control
+                        type="text"
+                        onChange={(event) => {
+                          setSelectedOrder({
+                            ...selectedOrder,
+                            deliveredDate: event.target.value,
+                          });
+                        }}
+                      />
+                      <p className="text-muted">Format : yyyy-MM-dd</p>
+                    </Form.Group>
 
-                <Container className="text-center">
-                  <Button type="submit" variant="primary">
-                    Save Changes
-                  </Button>
-                </Container>
-              </Form>
+                    <Container className="text-center">
+                      <Button type="submit" variant="primary">
+                        Save Changes
+                      </Button>
+                    </Container>
+                  </Form>
+                </Card.Body>
+              </Card>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleUpdateClose}>
