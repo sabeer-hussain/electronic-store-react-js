@@ -1,5 +1,6 @@
 import { Button, Card, Col, Container, Row, Table } from "react-bootstrap";
 import { formatDate } from "../services/HelperService";
+import { Link } from "react-router-dom";
 
 const SingleOrderView = ({ order, openViewOrderModal, openEditOrderModal }) => {
   return (
@@ -11,14 +12,23 @@ const SingleOrderView = ({ order, openViewOrderModal, openEditOrderModal }) => {
             {order.orderId}
           </Col>
           <Col>
-            <b>Billing Name: </b>
-            {order.billingName}
+            <b>Ordered By: </b>
+            <Link
+              className="text-muted"
+              to={`/users/profile/${order.user.userId}`}
+            >
+              {order.user.name}
+            </Link>
           </Col>
         </Row>
         <Row className="mt-3">
           <Col>
             <Table bordered striped>
               <tbody>
+                <tr>
+                  <td>Billing Name</td>
+                  <td className="fw-bold">{order.billingName}</td>
+                </tr>
                 <tr>
                   <td>Billing Phone</td>
                   <td className="fw-bold">{order.billingPhone}</td>
