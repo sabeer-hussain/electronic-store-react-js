@@ -10,6 +10,7 @@ import {
   Card,
   Col,
   Container,
+  Form,
   ListGroup,
   Modal,
   Row,
@@ -28,9 +29,12 @@ const AdminOrders = () => {
   // const [fakeOrders, setFakeOrders] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [updateShow, setUpdateShow] = useState(false);
+  const handleUpdateClose = () => setUpdateShow(false);
+  const handleUpdateShow = () => setUpdateShow(true);
 
   useEffect(() => {
     // single time on load
@@ -68,6 +72,12 @@ const AdminOrders = () => {
     getProductImages(order);
     setSelectedOrder({ ...order });
     handleShow();
+  };
+
+  const openEditOrderModal = (event, order) => {
+    // console.log("hi open edit order modal");
+    setSelectedOrder({ ...order });
+    handleUpdateShow();
   };
 
   // get orders
@@ -241,6 +251,154 @@ const AdminOrders = () => {
     );
   };
 
+  // update order modal
+  const updateOrderModal = () => {
+    return (
+      selectedOrder && (
+        <>
+          <Modal
+            animation={false}
+            size={"lg"}
+            show={updateShow}
+            onHide={handleUpdateClose}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Update Order</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                {/* billing name */}
+                <Form.Group>
+                  <Form.Label>Billing Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={selectedOrder.billingName}
+                    onChange={(event) => {
+                      setSelectedOrder({
+                        ...selectedOrder,
+                        billingName: event.target.value,
+                      });
+                    }}
+                  />
+                </Form.Group>
+
+                {/* billing phone */}
+                <Form.Group className="mt-3">
+                  <Form.Label>Billing Phone</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={selectedOrder.billingPhone}
+                    onChange={(event) => {
+                      setSelectedOrder({
+                        ...selectedOrder,
+                        billingPhone: event.target.value,
+                      });
+                    }}
+                  />
+                </Form.Group>
+
+                {/* billing address */}
+                <Form.Group className="mt-3">
+                  <Form.Label>Billing Address</Form.Label>
+                  <Form.Control
+                    as={"textarea"}
+                    rows={5}
+                    value={selectedOrder.billingAddress}
+                    onChange={(event) => {
+                      setSelectedOrder({
+                        ...selectedOrder,
+                        billingAddress: event.target.value,
+                      });
+                    }}
+                  />
+                </Form.Group>
+
+                {/* payment status */}
+                <Form.Group className="mt-3">
+                  <Form.Label>Payment Status</Form.Label>
+                  <Form.Select
+                    onChange={(event) => {
+                      setSelectedOrder({
+                        ...selectedOrder,
+                        paymentStatus: event.target.value,
+                      });
+                    }}
+                  >
+                    <option
+                      selected={selectedOrder.paymentStatus === "NOT_PAID"}
+                      value="NOT_PAID"
+                    >
+                      NOT PAID
+                    </option>
+                    <option
+                      selected={selectedOrder.paymentStatus === "PAID"}
+                      value="PAID"
+                    >
+                      PAID
+                    </option>
+                  </Form.Select>
+                </Form.Group>
+
+                {/* order status */}
+                <Form.Group className="mt-3">
+                  <Form.Label>Order Status</Form.Label>
+                  <Form.Select
+                    onChange={(event) => {
+                      setSelectedOrder({
+                        ...selectedOrder,
+                        orderStatus: event.target.value,
+                      });
+                    }}
+                  >
+                    <option
+                      selected={selectedOrder.orderStatus === "PENDING"}
+                      value="PENDING"
+                    >
+                      PENDING
+                    </option>
+                    <option
+                      selected={selectedOrder.orderStatus === "DISPATCHED"}
+                      value="DISPATCHED"
+                    >
+                      DISPATCHED
+                    </option>
+                    <option
+                      selected={selectedOrder.orderStatus === "ONWAY"}
+                      value="ONWAY"
+                    >
+                      ONWAY
+                    </option>
+                    <option
+                      selected={selectedOrder.orderStatus === "DELIVERED"}
+                      value="DELIVERED"
+                    >
+                      DELIVERED
+                    </option>
+                  </Form.Select>
+                </Form.Group>
+
+                {/* order delivered date */}
+                <Form.Group className="mt-3">
+                  <Form.Label>Select Date</Form.Label>
+                  <Form.Control type="text" />
+                  <p className="text-muted">Format : DD/MM/YYYY</p>
+                </Form.Group>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleUpdateClose}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={handleUpdateClose}>
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </>
+      )
+    );
+  };
+
   const ordersView = () => {
     return (
       <Card className="shadow-sm">
@@ -259,6 +417,7 @@ const AdminOrders = () => {
                   key={order.orderId}
                   order={order}
                   openViewOrderModal={openViewOrderModal}
+                  openEditOrderModal={openEditOrderModal}
                 />
               );
             })}
@@ -275,6 +434,7 @@ const AdminOrders = () => {
           <Col>
             {ordersData && ordersView()}
             {viewOrderModal()}
+            {updateOrderModal()}
           </Col>
         </Row>
       </Container>
