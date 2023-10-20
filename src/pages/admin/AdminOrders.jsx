@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllOrders } from "../../services/OrderService";
+import { getAllOrders, updateOrder } from "../../services/OrderService";
 import {
   ADMIN_ORDER_PAGE_SIZE,
   formatDate,
@@ -19,6 +19,7 @@ import {
 import SingleOrderView from "../../components/SingleOrderView";
 import { getProductImage } from "../../services/ProductService";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { toast } from "react-toastify";
 
 const AdminOrders = () => {
   const [ordersData, setOrdersData] = useState(undefined);
@@ -251,6 +252,35 @@ const AdminOrders = () => {
     );
   };
 
+  // handle order update
+  const handleOrderUpdate = async (event) => {
+    event.preventDefault();
+    console.log(selectedOrder);
+
+    if (selectedOrder.billingName.trim() === "") {
+      toast.error("Billing Name required !!");
+      return;
+    }
+    if (selectedOrder.billingPhone.trim() === "") {
+      toast.error("Billing Phone required !!");
+      return;
+    }
+    if (selectedOrder.billingAddress.trim() === "") {
+      toast.error("Billing Address required !!");
+      return;
+    }
+
+    try {
+      const data = await updateOrder(selectedOrder, selectedOrder.orderId);
+      toast.success("Order details update", {
+        position: "top-right",
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("Order not updated");
+    }
+  };
+
   // update order modal
   const updateOrderModal = () => {
     return (
@@ -266,7 +296,7 @@ const AdminOrders = () => {
               <Modal.Title>Update Order</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form>
+              <Form onSubmit={handleOrderUpdate}>
                 {/* billing name */}
                 <Form.Group>
                   <Form.Label>Billing Name</Form.Label>
@@ -383,14 +413,17 @@ const AdminOrders = () => {
                   <Form.Control type="text" />
                   <p className="text-muted">Format : DD/MM/YYYY</p>
                 </Form.Group>
+
+                <Container className="text-center">
+                  <Button type="submit" variant="primary">
+                    Save Changes
+                  </Button>
+                </Container>
               </Form>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleUpdateClose}>
                 Close
-              </Button>
-              <Button variant="primary" onClick={handleUpdateClose}>
-                Save Changes
               </Button>
             </Modal.Footer>
           </Modal>

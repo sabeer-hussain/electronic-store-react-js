@@ -9,3 +9,9 @@ export const getAllOrders = async (pageNumber, pageSize, sortBy, sortDir) => {
   );
   return result.data;
 };
+
+// update order
+export const updateOrder = async (order, orderId) => {
+  const result = await privateAxios.put(`/orders/${orderId}`, order);
+  return result.data;
+};
