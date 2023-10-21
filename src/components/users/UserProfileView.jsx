@@ -39,6 +39,10 @@ const UserProfileView = ({ user = null, userId, handleShowModal }) => {
                 alt="Profile Image"
                 className="border border-dark"
                 style={profileStyle}
+                onError={(event) => {
+                  console.log("error");
+                  event.currentTarget.setAttribute("src", profileImage);
+                }}
               />
             </Container>
             <h1 className="text-center text-uppercase fw-bold text-primary">
