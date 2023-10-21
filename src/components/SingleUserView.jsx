@@ -2,6 +2,7 @@ import { Badge, Card, Col, Row } from "react-bootstrap";
 import { getUserImage } from "../services/UserService";
 import { useEffect, useState } from "react";
 import defaultImage from "../assets/default_profile.jpg";
+import { Link } from "react-router-dom";
 
 const SingleUserView = ({ user }) => {
   const [userImage, setUserImage] = useState(undefined);
@@ -19,7 +20,7 @@ const SingleUserView = ({ user }) => {
       <Card className="mt-3 border border-0 shadow-sm">
         <Card.Body>
           <Row>
-            <Col md={1}>
+            <Col md={1} className="d-flex align-items-center">
               <img
                 style={{ width: "80px", height: "80px", objectFit: "cover" }}
                 className="rounded-circle"
@@ -32,7 +33,9 @@ const SingleUserView = ({ user }) => {
               />
             </Col>
             <Col md={11} className="ps-5">
-              <h5>{user.name}</h5>
+              <Link to={`/users/profile/${user.userId}`}>
+                <h5>{user.name}</h5>
+              </Link>
               <p className="text-muted">{user.about}</p>
               <p className="text-muted">{user.email}</p>
               {user.roles.map((role) => (
