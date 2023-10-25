@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getProductsOfCategory } from "../../services/ProductService";
 import { STORE_PAGE_PRODUCT_SIZE } from "../../services/HelperService";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Col, Container, Row } from "react-bootstrap";
+import { Breadcrumb, Col, Container, Row } from "react-bootstrap";
 import SingleProductCard from "../../components/users/SingleProductCard";
 import CategoryView from "../../components/users/CategoryView";
 
@@ -93,6 +93,14 @@ const CategoryStorePage = () => {
       <>
         <Container fluid className="px-5 pt-5">
           <Row>
+            <Container>
+              <Breadcrumb className="mx-5">
+                <Breadcrumb.Item as={Link} to="/store">
+                  Store
+                </Breadcrumb.Item>
+                <Breadcrumb.Item>{categoryTitle}</Breadcrumb.Item>
+              </Breadcrumb>
+            </Container>
             <Col md={3}>
               <CategoryView />
             </Col>
