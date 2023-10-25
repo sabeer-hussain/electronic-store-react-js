@@ -121,3 +121,10 @@ export const searchProducts = (query) => {
     .get(`/products/search/${query}`)
     .then((response) => response.data);
 };
+
+// get single product detail
+export const getProduct = (productId) => {
+  return privateAxios
+    .get(`/products/${productId}`)
+    .then((response) => response.data);
+};

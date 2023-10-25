@@ -24,6 +24,7 @@ import AdminUsers from "./pages/admin/AdminUsers";
 import ViewCategories from "./pages/admin/ViewCategories";
 import ViewProducts from "./pages/admin/ViewProducts";
 import StorePage from "./pages/users/StorePage";
+import ProductView from "./pages/users/ProductView";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/store" element={<StorePage />} />
+          <Route path="/store/products/:productId" element={<ProductView />} />
 
           <Route path="/users" element={<Dashboard />}>
             <Route path="home" element={<Home />} />

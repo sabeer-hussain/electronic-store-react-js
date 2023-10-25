@@ -3,6 +3,7 @@ import { Badge, Button, Card, Container } from "react-bootstrap";
 import defaultProductImage from "../../assets/default_product_image.jpg";
 import { getProductImage } from "../../services/ProductService";
 import "./SingleProductCard.css";
+import { Link } from "react-router-dom";
 
 const SingleProductCard = ({ product }) => {
   const [productImage, setProductImage] = useState(undefined);
@@ -55,7 +56,12 @@ const SingleProductCard = ({ product }) => {
           </b>
         </Container>
         <Container className="d-grid mt-4">
-          <Button variant="success" size="sm">
+          <Button
+            as={Link}
+            to={`/store/products/${product.productId}`}
+            variant="success"
+            size="sm"
+          >
             View Product
           </Button>
         </Container>
