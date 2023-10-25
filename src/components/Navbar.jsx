@@ -28,7 +28,7 @@ const CustomNavbar = () => {
       variant="dark"
       // className="bg-navbar-color"
     >
-      <Container>
+      <Container fluid className="px-5">
         <Navbar.Brand as={NavLink} to="/">
           <img src={logo} alt="logo" width={25} height={25} />
           <span className="ms-1 mt-1">ElectroStore</span>
@@ -57,6 +57,9 @@ const CustomNavbar = () => {
             </Nav.Link>
           </Nav>
           <Nav>
+            <Nav.Link as={NavLink} to="/store">
+              Store
+            </Nav.Link>
             <Nav.Link as={NavLink} to="/cart">
               Cart ( 40 )
             </Nav.Link>

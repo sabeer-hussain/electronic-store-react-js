@@ -4,7 +4,6 @@ import Index from "./pages/Index";
 import About from "./pages/About";
 import Services from "./pages/Services";
 import Cart from "./pages/Cart";
-import Store from "./pages/Store";
 import Dashboard from "./pages/users/Dashboard";
 import Profile from "./pages/users/Profile";
 import AboutUser from "./pages/users/AboutUser";
@@ -24,6 +23,7 @@ import AdminOrders from "./pages/admin/AdminOrders";
 import AdminUsers from "./pages/admin/AdminUsers";
 import ViewCategories from "./pages/admin/ViewCategories";
 import ViewProducts from "./pages/admin/ViewProducts";
+import StorePage from "./pages/users/StorePage";
 
 function App() {
   return (
@@ -44,9 +44,9 @@ function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/store" element={<Store />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/store" element={<StorePage />} />
 
           <Route path="/users" element={<Dashboard />}>
             <Route path="home" element={<Home />} />
