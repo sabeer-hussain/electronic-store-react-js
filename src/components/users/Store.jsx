@@ -4,6 +4,9 @@ import { getCategories } from "../../services/CategoryService";
 import { useState } from "react";
 import { useEffect } from "react";
 import defaultCategoryImage from "../../assets/default_profile.jpg";
+import { getAllLiveProducts } from "../../services/ProductService";
+import { toast } from "react-toastify";
+import SingleProductCard from "./SingleProductCard";
 
 const Store = () => {
   const [categories, setCategories] = useState(null);
@@ -11,6 +14,7 @@ const Store = () => {
 
   useEffect(() => {
     loadCategories(0, 100000);
+    loadProducts(0, 9, "addedDate", "desc");
   }, []);
 
   const loadCategories = (pageNumber, pageSize) => {
@@ -24,7 +28,17 @@ const Store = () => {
       });
   };
 
-  const loadProducts = () => {};
+  const loadProducts = (pageNumber, pageSize, sortBy, sortDir) => {
+    getAllLiveProducts(pageNumber, pageSize, sortBy, sortDir)
+      .then((data) => {
+        console.log(data);
+        setProducts({ ...data });
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Error in loading products");
+      });
+  };
 
   const categoryView = () => {
     return (
@@ -74,7 +88,19 @@ const Store = () => {
     );
   };
   const productsView = () => {
-    return <h1>This is product view</h1>;
+    return (
+      products && (
+        <>
+          <Row>
+            {products.content.map((product) => (
+              <Col key={product.productId} md={4}>
+                <SingleProductCard product={product} />
+              </Col>
+            ))}
+          </Row>
+        </>
+      )
+    );
   };
 
   return (

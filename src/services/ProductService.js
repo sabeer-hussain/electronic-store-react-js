@@ -41,6 +41,20 @@ export const getAllProducts = (
     .then((response) => response.data);
 };
 
+// get all live products
+export const getAllLiveProducts = (
+  pageNumber = 0,
+  pageSize = 10,
+  sortBy = "addedDate",
+  sortDir = "asc"
+) => {
+  return privateAxios
+    .get(
+      `/products/live?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`
+    )
+    .then((response) => response.data);
+};
+
 // serve product image
 export const getProductImage = async (productId) => {
   const jwtToken = getTokenFromLocalStorage();
