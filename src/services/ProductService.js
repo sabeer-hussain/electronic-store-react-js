@@ -128,3 +128,18 @@ export const getProduct = (productId) => {
     .get(`/products/${productId}`)
     .then((response) => response.data);
 };
+
+// get products of category
+export const getProductsOfCategory = (
+  categoryId,
+  pageNumber = 0,
+  pageSize = 10,
+  sortBy = "addedDate",
+  sortDir = "asc"
+) => {
+  return privateAxios
+    .get(
+      `/categories/${categoryId}/products?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`
+    )
+    .then((response) => response.data);
+};

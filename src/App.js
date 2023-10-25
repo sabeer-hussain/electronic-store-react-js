@@ -25,6 +25,7 @@ import ViewCategories from "./pages/admin/ViewCategories";
 import ViewProducts from "./pages/admin/ViewProducts";
 import StorePage from "./pages/users/StorePage";
 import ProductView from "./pages/users/ProductView";
+import CategoryStorePage from "./pages/users/CategoryStorePage";
 
 function App() {
   return (
@@ -49,6 +50,10 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/store" element={<StorePage />} />
           <Route path="/store/products/:productId" element={<ProductView />} />
+          <Route
+            path="/store/:categoryId/:categoryTitle"
+            element={<CategoryStorePage />}
+          />
 
           <Route path="/users" element={<Dashboard />}>
             <Route path="home" element={<Home />} />
