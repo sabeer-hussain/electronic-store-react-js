@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -6,8 +6,10 @@ import { getProduct, getProductImage } from "../../services/ProductService";
 import { Badge, Button, Card, Col, Container, Row } from "react-bootstrap";
 import ShowHtml from "../../components/ShowHtml";
 import defaultProductImage from "../../assets/default_product_image.jpg";
+import CartContext from "../../context/CartContext";
 
 const ProductView = () => {
+  const { cart, addItem } = useContext(CartContext);
   const [product, setProduct] = useState(null);
   const [productImage, setProductImage] = useState(undefined);
   const { productId } = useParams();
@@ -21,6 +23,10 @@ const ProductView = () => {
     getProduct(productId)
       .then((data) => setProduct(data))
       .catch((error) => console.log(error));
+  };
+
+  const handleAddItem = (productId, quantity) => {
+    addItem(productId, quantity);
   };
 
   const getProductImageFromServer = async () => {
@@ -82,7 +88,13 @@ const ProductView = () => {
                         </b>
                       </Container>
                       <Container className="d-grid mt-4">
-                        <Button variant="warning" size="sm">
+                        <Button
+                          variant="warning"
+                          size="sm"
+                          onClick={(event) =>
+                            handleAddItem(product.productId, 1)
+                          }
+                        >
                           Add to Cart
                         </Button>
                         <Button
@@ -107,7 +119,11 @@ const ProductView = () => {
         </Row>
 
         <Container className="d-grid mt-4">
-          <Button variant="warning" size="sm">
+          <Button
+            variant="warning"
+            size="sm"
+            onClick={(event) => handleAddItem(product.productId, 1)}
+          >
             Add to Cart
           </Button>
           <Button
