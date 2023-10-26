@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Col, Row } from "react-bootstrap";
+import { Button, Card, Col, Row } from "react-bootstrap";
 import { getProductImage } from "../../services/ProductService";
 import defaultProductImage from "../../assets/default_product_image.jpg";
 
@@ -32,7 +32,7 @@ const SingleCartItemView = ({ item }) => {
               }}
             />
           </Col>
-          <Col md={10}>
+          <Col md={9}>
             <h5>{item.product.title}</h5>
             <p className="text-muted">
               <span>
@@ -61,7 +61,32 @@ const SingleCartItemView = ({ item }) => {
               </Col>
             </Row>
           </Col>
-          <Col md={3}></Col>
+          <Col
+            md={2}
+            className="d-flex align-items-center justify-content-center"
+          >
+            <div className="w-100">
+              <div className="d-grid">
+                <Button variant="danger" size="sm">
+                  Remove
+                </Button>
+              </div>
+              <div className="mt-2">
+                <Row>
+                  <Col className="d-grid">
+                    <Button variant="info" size="sm">
+                      -
+                    </Button>
+                  </Col>
+                  <Col className="d-grid">
+                    <Button variant="success" size="sm">
+                      +
+                    </Button>
+                  </Col>
+                </Row>
+              </div>
+            </div>
+          </Col>
         </Row>
       </Card.Body>
     </Card>
