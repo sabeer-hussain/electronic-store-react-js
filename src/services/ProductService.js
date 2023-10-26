@@ -41,6 +41,20 @@ export const getAllProducts = (
     .then((response) => response.data);
 };
 
+// get all live products
+export const getAllLiveProducts = (
+  pageNumber = 0,
+  pageSize = 10,
+  sortBy = "addedDate",
+  sortDir = "asc"
+) => {
+  return privateAxios
+    .get(
+      `/products/live?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`
+    )
+    .then((response) => response.data);
+};
+
 // serve product image
 export const getProductImage = async (productId) => {
   const jwtToken = getTokenFromLocalStorage();
@@ -105,5 +119,27 @@ export const updateCategoryOfProduct = (categoryId, productId) => {
 export const searchProducts = (query) => {
   return privateAxios
     .get(`/products/search/${query}`)
+    .then((response) => response.data);
+};
+
+// get single product detail
+export const getProduct = (productId) => {
+  return privateAxios
+    .get(`/products/${productId}`)
+    .then((response) => response.data);
+};
+
+// get products of category
+export const getProductsOfCategory = (
+  categoryId,
+  pageNumber = 0,
+  pageSize = 10,
+  sortBy = "addedDate",
+  sortDir = "asc"
+) => {
+  return privateAxios
+    .get(
+      `/categories/${categoryId}/products?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`
+    )
     .then((response) => response.data);
 };

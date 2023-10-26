@@ -6,6 +6,8 @@ export const PRODUCT_PAGE_SIZE = 10;
 
 export const ADMIN_ORDER_PAGE_SIZE = 10;
 
+export const STORE_PAGE_PRODUCT_SIZE = 9;
+
 export const getUserImageUrl = (userId) => {
   return `${BASE_URL}/users/image/${userId}`;
 };
