@@ -53,7 +53,9 @@ const CartProvider = ({ children }) => {
   const removeItem = async (itemId) => {
     try {
       const result = await removeItemFromCart(userData.user.userId, itemId);
-      const newCartItems = cart.items.map((item) => item.cartItemId !== itemId);
+      const newCartItems = cart.items.filter(
+        (item) => item.cartItemId !== itemId
+      );
       setCart({
         ...cart,
         items: newCartItems,

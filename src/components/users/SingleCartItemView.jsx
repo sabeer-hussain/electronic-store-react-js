@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import { getProductImage } from "../../services/ProductService";
 import defaultProductImage from "../../assets/default_product_image.jpg";
+import CartContext from "../../context/CartContext";
 
 const SingleCartItemView = ({ item }) => {
+  const { cart, setCart, addItem, removeItem } = useContext(CartContext);
   const [productImage, setProductImage] = useState(undefined);
 
   const getProductImageFromServer = async () => {
@@ -67,7 +69,13 @@ const SingleCartItemView = ({ item }) => {
           >
             <div className="w-100">
               <div className="d-grid">
-                <Button variant="danger" size="sm">
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={(event) => {
+                    removeItem(item.cartItemId);
+                  }}
+                >
                   Remove
                 </Button>
               </div>
