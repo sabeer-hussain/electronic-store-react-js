@@ -28,6 +28,8 @@ const CartProvider = ({ children }) => {
     if (isLogin) {
       // get user cart
       loadUserCart(userData.user.userId);
+    } else {
+      setCart(null);
     }
   }, [isLogin]);
 
