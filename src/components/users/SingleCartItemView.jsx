@@ -3,6 +3,7 @@ import { Button, Card, Col, Row } from "react-bootstrap";
 import { getProductImage } from "../../services/ProductService";
 import defaultProductImage from "../../assets/default_product_image.jpg";
 import CartContext from "../../context/CartContext";
+import { toast } from "react-toastify";
 
 const SingleCartItemView = ({ item }) => {
   const { cart, setCart, addItem, removeItem } = useContext(CartContext);
@@ -82,12 +83,42 @@ const SingleCartItemView = ({ item }) => {
               <div className="mt-2">
                 <Row>
                   <Col className="d-grid">
-                    <Button variant="info" size="sm">
+                    <Button
+                      variant="info"
+                      size="sm"
+                      onClick={(event) => {
+                        const decreasedQuantity = item.quantity - 1;
+                        if (decreasedQuantity > 0) {
+                          addItem(
+                            item.product.productId,
+                            decreasedQuantity,
+                            () => {
+                              toast.info("Quantity Updated");
+                            }
+                          );
+                        } else {
+                          toast.info("Quantity can not be less than 1");
+                        }
+                      }}
+                    >
                       -
                     </Button>
                   </Col>
                   <Col className="d-grid">
-                    <Button variant="success" size="sm">
+                    <Button
+                      variant="success"
+                      size="sm"
+                      onClick={(event) => {
+                        const increasedQuantity = item.quantity + 1;
+                        addItem(
+                          item.product.productId,
+                          increasedQuantity,
+                          () => {
+                            toast.success("Quantity Updated");
+                          }
+                        );
+                      }}
+                    >
                       +
                     </Button>
                   </Col>

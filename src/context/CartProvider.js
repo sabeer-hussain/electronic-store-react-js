@@ -32,7 +32,7 @@ const CartProvider = ({ children }) => {
   }, [isLogin]);
 
   // add item to cart
-  const addItem = async (productId, quantity) => {
+  const addItem = async (productId, quantity, next) => {
     try {
       const result = await addItemToCart(
         userData.user.userId,
@@ -40,9 +40,16 @@ const CartProvider = ({ children }) => {
         quantity
       );
       setCart({ ...result });
-      toast.success("Item added to cart", {
-        position: "top-right",
-      });
+      // if (quantity > 1) {
+      //   toast.success("Quantity updated", {
+      //     position: "top-right",
+      //   });
+      // } else {
+      //   toast.success("Item added to cart", {
+      //     position: "top-right",
+      //   });
+      // }
+      next();
     } catch (error) {
       console.log(error);
       toast.error("error in adding product in cart");

@@ -7,6 +7,7 @@ import { Badge, Button, Card, Col, Container, Row } from "react-bootstrap";
 import ShowHtml from "../../components/ShowHtml";
 import defaultProductImage from "../../assets/default_product_image.jpg";
 import CartContext from "../../context/CartContext";
+import { toast } from "react-toastify";
 
 const ProductView = () => {
   const { cart, addItem } = useContext(CartContext);
@@ -26,7 +27,9 @@ const ProductView = () => {
   };
 
   const handleAddItem = (productId, quantity) => {
-    addItem(productId, quantity);
+    addItem(productId, quantity, () => {
+      toast.success("Product is added to cart");
+    });
   };
 
   const getProductImageFromServer = async () => {
