@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import CartContext from "../context/CartContext";
 import { Alert, Button, Card, Col, Container, Row } from "react-bootstrap";
 import SingleCartItemView from "../components/users/SingleCartItemView";
@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 function Cart() {
   const { cart, setCart, addItem, removeItem } = useContext(CartContext);
+  const [orderPlacedClicked, setOrderPlacedClicked] = useState(false);
 
   const getTotalCartAmount = () => {
     let amount = 0;
@@ -41,7 +42,14 @@ function Cart() {
               </h3>
             </Container>
             <Container className="text-center">
-              <Button size="lg">Place Order</Button>
+              {!orderPlacedClicked && (
+                <Button
+                  size="lg"
+                  onClick={(event) => setOrderPlacedClicked(true)}
+                >
+                  Place Order
+                </Button>
+              )}
             </Container>
           </Card.Body>
         </Card>
@@ -51,9 +59,9 @@ function Cart() {
 
   return (
     <div className="">
-      <Container>
+      <Container fluid={orderPlacedClicked} className="px-5">
         <Row>
-          <Col>
+          <Col md={orderPlacedClicked ? 8 : 12} className="animation">
             {cart &&
               (cart.items.length > 0 ? (
                 cartView()
@@ -86,6 +94,15 @@ function Cart() {
               </Alert>
             )}
           </Col>
+          {orderPlacedClicked && (
+            <Col md={4}>
+              <Card className="mt-3 shadow-sm">
+                <Card.Body>
+                  <h4>Fill the form to complete order</h4>
+                </Card.Body>
+              </Card>
+            </Col>
+          )}
         </Row>
       </Container>
     </div>
