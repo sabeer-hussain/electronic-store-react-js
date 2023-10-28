@@ -1,6 +1,14 @@
 import { useContext, useState } from "react";
 import CartContext from "../context/CartContext";
-import { Alert, Button, Card, Col, Container, Row } from "react-bootstrap";
+import {
+  Alert,
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  Row,
+} from "react-bootstrap";
 import SingleCartItemView from "../components/users/SingleCartItemView";
 import { Link } from "react-router-dom";
 
@@ -14,6 +22,33 @@ function Cart() {
       amount += item.totalPrice;
     });
     return amount;
+  };
+
+  const orderFormView = () => {
+    return (
+      <Form>
+        {/* billing name */}
+        <Form.Group className="mt-3">
+          <Form.Label>Billing Name</Form.Label>
+          <Form.Control type="text" placeholder="Enter here" />
+        </Form.Group>
+        {/* billing phone */}
+        <Form.Group className="mt-3">
+          <Form.Label>Billing Phone</Form.Label>
+          <Form.Control type="number" placeholder="Enter here" />
+        </Form.Group>
+        {/* billing address */}
+        <Form.Group className="mt-3">
+          <Form.Label>Billing Address</Form.Label>
+          <Form.Control as={"textarea"} rows={6} placeholder="Enter here" />
+        </Form.Group>
+        <Container className="mt-3 text-center">
+          <Button variant="success" size="sm">
+            Create Order & Proceed to Pay
+          </Button>
+        </Container>
+      </Form>
+    );
   };
 
   const cartView = () => {
@@ -44,7 +79,7 @@ function Cart() {
             <Container className="text-center">
               {!orderPlacedClicked && (
                 <Button
-                  size="lg"
+                  size="sm"
                   onClick={(event) => setOrderPlacedClicked(true)}
                 >
                   Place Order
@@ -96,9 +131,10 @@ function Cart() {
           </Col>
           {orderPlacedClicked && (
             <Col md={4}>
-              <Card className="mt-3 shadow-sm">
+              <Card className="mt-3 shadow-sm bg-dark text-white">
                 <Card.Body>
                   <h4>Fill the form to complete order</h4>
+                  {orderFormView()}
                 </Card.Body>
               </Card>
             </Col>
