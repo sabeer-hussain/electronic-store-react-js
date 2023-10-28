@@ -52,3 +52,7 @@
 .animation {
   transition: all 100ms linear !important;
 }
+
+body {
+  background-color: #f9f7f2 !important;
+}
