@@ -48,3 +48,7 @@
   /* margin-top: 3px; */
   /* border: 1px solid #e2e2e2 !important; */
 }
+
+.animation {
+  transition: all 100ms linear !important;
+}
