@@ -1,12 +1,12 @@
 export const BASE_URL = "http://localhost:9090";
 
 export const USER_PAGE_SIZE = 10;
-
 export const PRODUCT_PAGE_SIZE = 10;
-
 export const ADMIN_ORDER_PAGE_SIZE = 10;
-
 export const STORE_PAGE_PRODUCT_SIZE = 9;
+
+export const ORDER_STATUS = "PENDING";
+export const PAYMENT_STATUS = "NOT_PAID";
 
 export const getUserImageUrl = (userId) => {
   return `${BASE_URL}/users/image/${userId}`;
