@@ -9,7 +9,7 @@ import Profile from "./pages/users/Profile";
 import AboutUser from "./pages/users/AboutUser";
 import CustomNavbar from "./components/Navbar";
 import Contact from "./pages/Contact";
-import { Flip, ToastContainer, Zoom } from "react-toastify";
+import { Flip, ToastContainer, Zoom, toast } from "react-toastify";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/users/Home";
@@ -30,6 +30,7 @@ import CartProvider from "./context/CartProvider";
 import Loading from "./components/Loading";
 import { useEffect, useState } from "react";
 import { privateAxios, publicAxios } from "./services/AxiosService";
+import Swal from "sweetalert2";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -52,7 +53,18 @@ function App() {
         setLoading(false);
         return config;
       },
-      (error) => Promise.reject(error)
+      (error) => {
+        setLoading(false);
+        if (error.code === "ERR_NETWORK") {
+          // toast.error("Backend Server is down ! Try Again");
+          Swal.fire({
+            title: "Network Error",
+            html: "Backend server is down",
+            icon: "info",
+          });
+        }
+        return Promise.reject(error);
+      }
     );
 
     // request interceptor for private endpoints
@@ -72,7 +84,18 @@ function App() {
         setLoading(false);
         return config;
       },
-      (error) => Promise.reject(error)
+      (error) => {
+        setLoading(false);
+        if (error.code === "ERR_NETWORK") {
+          // toast.error("Backend Server is down ! Try Again");
+          Swal.fire({
+            title: "Network Error",
+            html: "Backend server is down",
+            icon: "info",
+          });
+        }
+        return Promise.reject(error);
+      }
     );
   }, []);
 

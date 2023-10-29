@@ -104,7 +104,7 @@ const Login = () => {
       .catch((error) => {
         // error handler
         console.log(error);
-        toast.error(error.response.data.message);
+        toast.error(error.response && error.response.data.message);
         setError({
           isError: true,
           errorData: error,
