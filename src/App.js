@@ -27,8 +27,55 @@ import StorePage from "./pages/users/StorePage";
 import ProductView from "./pages/users/ProductView";
 import CategoryStorePage from "./pages/users/CategoryStorePage";
 import CartProvider from "./context/CartProvider";
+import Loading from "./components/Loading";
+import { useEffect, useState } from "react";
+import { privateAxios, publicAxios } from "./services/AxiosService";
 
 function App() {
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // request interceptor for public endpoints
+    publicAxios.interceptors.request.use(
+      (config) => {
+        // modification in request
+        setLoading(true);
+        return config;
+      },
+      (error) => Promise.reject(error)
+    );
+
+    // response interceptor for public endpoints
+    publicAxios.interceptors.response.use(
+      (config) => {
+        // modification in response
+        setLoading(false);
+        return config;
+      },
+      (error) => Promise.reject(error)
+    );
+
+    // request interceptor for private endpoints
+    privateAxios.interceptors.request.use(
+      (config) => {
+        // modification in request
+        setLoading(true);
+        return config;
+      },
+      (error) => Promise.reject(error)
+    );
+
+    // response interceptor for private endpoints
+    privateAxios.interceptors.response.use(
+      (config) => {
+        // modification in response
+        setLoading(false);
+        return config;
+      },
+      (error) => Promise.reject(error)
+    );
+  }, []);
+
   return (
     <UserProvider>
       <CartProvider>
@@ -42,6 +89,7 @@ function App() {
             // transition={Flip}
           />
           <CustomNavbar />
+          <Loading show={loading} />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
