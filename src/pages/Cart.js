@@ -15,8 +15,11 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { createOrder } from "../services/OrderService";
 import { ORDER_STATUS, PAYMENT_STATUS } from "../services/HelperService";
+import useJwtTokenExpiration from "../hooks/useJwtTokenExpiration";
 
 function Cart() {
+  const flag = useJwtTokenExpiration();
+
   const { cart, setCart, addItem, removeItem } = useContext(CartContext);
   const [orderPlacedClicked, setOrderPlacedClicked] = useState(false);
   const { userData, isLogin } = useContext(UserContext);
