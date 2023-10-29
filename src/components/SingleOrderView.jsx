@@ -90,7 +90,11 @@ const SingleOrderView = ({ order, openViewOrderModal, openEditOrderModal }) => {
             </Button>
           )}
 
-          <Button variant="info" size="sm" onClick={(event) => {}}>
+          <Button
+            variant="info"
+            size="sm"
+            onClick={(event) => openViewOrderModal(event, order)}
+          >
             Order Details
           </Button>
         </Container>

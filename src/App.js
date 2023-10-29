@@ -28,76 +28,10 @@ import ProductView from "./pages/users/ProductView";
 import CategoryStorePage from "./pages/users/CategoryStorePage";
 import CartProvider from "./context/CartProvider";
 import Loading from "./components/Loading";
-import { useEffect, useState } from "react";
-import { privateAxios, publicAxios } from "./services/AxiosService";
-import Swal from "sweetalert2";
+import useLoader from "./hooks/useLoader";
 
 function App() {
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    // request interceptor for public endpoints
-    publicAxios.interceptors.request.use(
-      (config) => {
-        // modification in request
-        setLoading(true);
-        return config;
-      },
-      (error) => Promise.reject(error)
-    );
-
-    // response interceptor for public endpoints
-    publicAxios.interceptors.response.use(
-      (config) => {
-        // modification in response
-        setLoading(false);
-        return config;
-      },
-      (error) => {
-        setLoading(false);
-        if (error.code === "ERR_NETWORK") {
-          // toast.error("Backend Server is down ! Try Again");
-          Swal.fire({
-            title: "Network Error",
-            html: "Backend server is down",
-            icon: "info",
-          });
-        }
-        return Promise.reject(error);
-      }
-    );
-
-    // request interceptor for private endpoints
-    privateAxios.interceptors.request.use(
-      (config) => {
-        // modification in request
-        setLoading(true);
-        return config;
-      },
-      (error) => Promise.reject(error)
-    );
-
-    // response interceptor for private endpoints
-    privateAxios.interceptors.response.use(
-      (config) => {
-        // modification in response
-        setLoading(false);
-        return config;
-      },
-      (error) => {
-        setLoading(false);
-        if (error.code === "ERR_NETWORK") {
-          // toast.error("Backend Server is down ! Try Again");
-          Swal.fire({
-            title: "Network Error",
-            html: "Backend server is down",
-            icon: "info",
-          });
-        }
-        return Promise.reject(error);
-      }
-    );
-  }, []);
+  const loading = useLoader();
 
   return (
     <UserProvider>
