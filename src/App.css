@@ -43,6 +43,11 @@
   border: none !important;
 }
 
+/* .pagination .page-item.active {
+  background-color: black !important;
+  color: white !important;
+} */
+
 .list-group-item {
   /* border: none !important; */
   /* margin-top: 3px; */
@@ -51,4 +56,8 @@
 
 .animation {
   transition: all 100ms linear !important;
+}
+
+body {
+  background-color: #f9f7f2 !important;
 }

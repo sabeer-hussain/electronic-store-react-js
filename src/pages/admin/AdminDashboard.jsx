@@ -4,8 +4,11 @@ import { useContext } from "react";
 import UserContext from "../../context/UserContext";
 import { Col, Container, Row } from "react-bootstrap";
 import SideMenu from "../../components/admin/SideMenu";
+import useJwtTokenExpiration from "../../hooks/useJwtTokenExpiration";
 
 const AdminDashboard = () => {
+  useJwtTokenExpiration();
+
   const userContext = useContext(UserContext);
 
   const dashboardView = () => {

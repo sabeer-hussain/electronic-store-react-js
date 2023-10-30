@@ -1,8 +1,8 @@
 // user related api calls
 
-import { getTokenFromLocalStorage } from "../auth/HelperAuth";
+// import { getTokenFromLocalStorage } from "../auth/HelperAuth";
 import { privateAxios, publicAxios } from "./AxiosService";
-import { BASE_URL } from "./HelperService";
+// import { BASE_URL } from "./HelperService";
 
 // register new user
 export const registerUser = (userData) => {
@@ -18,9 +18,10 @@ export const loginUser = (loginData) => {
 
 // get user
 export const getUser = (userId) => {
-  return privateAxios.get(`/users/${userId}`).then((response) => response.data);
+  return publicAxios.get(`/users/${userId}`).then((response) => response.data);
 };
 
+/*
 // serve user image
 export const getUserImage = async (userId) => {
   const jwtToken = getTokenFromLocalStorage();
@@ -50,6 +51,7 @@ const getBase64Image = async (res) => {
   });
   return reader.result;
 };
+*/
 
 // update user
 export const updateUser = (user) => {
@@ -76,5 +78,12 @@ export const getAllUsers = (pageNumber, pageSize, sortBy, sortDir) => {
     .get(
       `/users?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`
     )
+    .then((response) => response.data);
+};
+
+// search users
+export const searchUsers = (query) => {
+  return privateAxios
+    .get(`/users/search/${query}`)
     .then((response) => response.data);
 };

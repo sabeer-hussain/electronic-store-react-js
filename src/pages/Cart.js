@@ -15,11 +15,15 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { createOrder } from "../services/OrderService";
 import { ORDER_STATUS, PAYMENT_STATUS } from "../services/HelperService";
+import useJwtTokenExpiration from "../hooks/useJwtTokenExpiration";
 
 function Cart() {
+  const flag = useJwtTokenExpiration();
+
   const { cart, setCart, addItem, removeItem } = useContext(CartContext);
-  const [orderPlacedClicked, setOrderPlacedClicked] = useState(false);
   const { userData, isLogin } = useContext(UserContext);
+
+  const [orderPlacedClicked, setOrderPlacedClicked] = useState(false);
   const [orderDetails, setOrderDetails] = useState({
     billingAddress: "",
     billingName: "",
@@ -112,12 +116,12 @@ function Cart() {
             type="text"
             placeholder="Enter here"
             value={orderDetails.billingName}
-            onChange={(event) =>
+            onChange={(event) => {
               setOrderDetails({
                 ...orderDetails,
                 billingName: event.target.value,
-              })
-            }
+              });
+            }}
           />
         </Form.Group>
         {/* billing phone */}
@@ -143,16 +147,20 @@ function Cart() {
             rows={6}
             placeholder="Enter here"
             value={orderDetails.billingAddress}
-            onChange={(event) =>
+            onChange={(event) => {
               setOrderDetails({
                 ...orderDetails,
                 billingAddress: event.target.value,
-              })
-            }
+              });
+            }}
           />
         </Form.Group>
         <Container className="mt-3 text-center">
-          <Button variant="success" size="sm" onClick={handleOrderCreation}>
+          <Button
+            variant="success"
+            size="sm"
+            onClick={(event) => handleOrderCreation()}
+          >
             Create Order & Proceed to Pay
           </Button>
         </Container>
@@ -169,8 +177,8 @@ function Cart() {
               <Col>
                 <h3>Cart</h3>
               </Col>
-              <Col>
-                <h3 className="text-end">{cart.items.length} Items</h3>
+              <Col className="text-end">
+                <h3>{cart.items.length} Items</h3>
               </Col>
             </Row>
             <Row className="px-5 mt-3">
@@ -220,7 +228,7 @@ function Cart() {
                     Aut, distinctio.
                   </p>
                   <Button variant="info" as={Link} to="/store">
-                    Starting Adding Product in Cart
+                    Start Adding Product in Cart
                   </Button>
                 </Alert>
               ))}

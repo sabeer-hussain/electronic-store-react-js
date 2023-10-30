@@ -1,20 +1,9 @@
 import { Badge, Card, Col, Row } from "react-bootstrap";
-import { getUserImage } from "../services/UserService";
-import { useEffect, useState } from "react";
+import { getUserImageUrl } from "../services/HelperService";
 import defaultImage from "../assets/default_profile.jpg";
 import { Link } from "react-router-dom";
 
 const SingleUserView = ({ user }) => {
-  const [userImage, setUserImage] = useState(undefined);
-
-  useEffect(() => {
-    getUserImageFromServer(user.userId);
-  }, []);
-
-  const getUserImageFromServer = async (userId) => {
-    // api call
-    setUserImage(await getUserImage(userId));
-  };
   return (
     <>
       <Card className="mt-3 border border-0 shadow-sm">
@@ -24,7 +13,9 @@ const SingleUserView = ({ user }) => {
               <img
                 style={{ width: "80px", height: "80px", objectFit: "cover" }}
                 className="rounded-circle"
-                src={user.imageName ? userImage : defaultImage}
+                src={
+                  user.imageName ? getUserImageUrl(user.userId) : defaultImage
+                }
                 alt=""
                 onError={(event) => {
                   console.log("error");
@@ -38,16 +29,18 @@ const SingleUserView = ({ user }) => {
               </Link>
               <p className="text-muted">{user.about}</p>
               <p className="text-muted">{user.email}</p>
-              {user.roles.map((role) => (
-                <Badge
-                  bg={role.roleName === "ROLE_ADMIN" ? "success" : "info"}
-                  key={role.roleId}
-                  pill
-                  className="mx-2"
-                >
-                  {role.roleName}
-                </Badge>
-              ))}
+              {user.roles.map((role) => {
+                return (
+                  <Badge
+                    bg={role.roleName === "ROLE_ADMIN" ? "success" : "info"}
+                    key={role.roleId}
+                    pill
+                    className="mx-2"
+                  >
+                    {role.roleName}
+                  </Badge>
+                );
+              })}
             </Col>
           </Row>
         </Card.Body>

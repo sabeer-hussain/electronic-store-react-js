@@ -1,25 +1,10 @@
 import { Button, Card, Container, Table } from "react-bootstrap";
 import profileImage from "../../assets/default_profile.jpg";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import UserContext from "../../context/UserContext";
-import { getUserImage } from "../../services/UserService";
+import { BASE_URL } from "../../services/HelperService";
 
 const UserProfileView = ({ user = null, userId, handleShowModal }) => {
-  const userContext = useContext(UserContext);
-
-  const [userImage, setUserImage] = useState(null);
-
-  useEffect(() => {
-    getUserImageFromServer();
-  }, []);
-
-  const getUserImageFromServer = async () => {
-    // api call
-    console.log(userContext);
-
-    setUserImage(await getUserImage(userId));
-  };
-
   const { userData, isLogin } = useContext(UserContext);
 
   const profileStyle = {
@@ -35,7 +20,15 @@ const UserProfileView = ({ user = null, userId, handleShowModal }) => {
           <Card.Body>
             <Container className="text-center my-3">
               <img
-                src={user.imageName ? userImage : profileImage}
+                src={
+                  user.imageName
+                    ? BASE_URL +
+                      "/users/image/" +
+                      user.userId +
+                      "?" +
+                      new Date().getTime()
+                    : profileImage
+                }
                 alt="Profile Image"
                 className="border border-dark"
                 style={profileStyle}

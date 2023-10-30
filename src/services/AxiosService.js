@@ -12,9 +12,10 @@ export const privateAxios = axios.create({
 
 privateAxios.interceptors.request.use(
   (config) => {
-    // modification in request
+    // will do modification in request
     const token = getTokenFromLocalStorage();
     if (token) {
+      // console.log(config.headers);
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
