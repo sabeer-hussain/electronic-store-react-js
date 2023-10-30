@@ -80,3 +80,10 @@ export const getAllUsers = (pageNumber, pageSize, sortBy, sortDir) => {
     )
     .then((response) => response.data);
 };
+
+// search users
+export const searchUsers = (query) => {
+  return privateAxios
+    .get(`/users/search/${query}`)
+    .then((response) => response.data);
+};
