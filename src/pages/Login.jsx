@@ -215,8 +215,9 @@ const Login = () => {
       </Container>
     );
   };
+
   return (
-    <Base title="Electro Store / Login" description="Login Here">
+    <Base title="Electro Store / Login" description="Login Here" description={null}>
       {loginForm()}
     </Base>
   );

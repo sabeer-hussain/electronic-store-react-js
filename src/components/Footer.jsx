@@ -5,7 +5,7 @@ const Footer = () => {
     <Container fluid className="bg-dark p-5 text-white text-center">
       <h3>We provide best products</h3>
       <p>
-        All rights reserved - <b>Substring Technologies</b>
+        All rights reserved - <b>Sabeer Technologies</b>
       </p>
     </Container>
   );

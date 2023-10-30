@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import CartContext from "./CartContext";
 import {
   addItemToCart,
+  clearCart,
   getCart,
   removeItemFromCart,
 } from "../services/CartService";
@@ -85,18 +86,36 @@ const CartProvider = ({ children }) => {
       const newCartItems = cart.items.filter(
         (item) => item.cartItemId !== itemId
       );
+      console.log(newCartItems);
       setCart({
         ...cart,
         items: newCartItems,
       });
     } catch (error) {
       console.log(error);
-      toast.error("error in removing items from cart");
+      toast.error("Error in removing items from cart");
+    }
+  };
+
+  // clear cart
+  const clear = async () => {
+    try {
+      const result = await clearCart(userData.user.userId);
+      console.log(result);
+      setCart({
+        ...cart,
+        items: [],
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("Error in clearing cart");
     }
   };
 
   return (
-    <CartContext.Provider value={{ cart, setCart, addItem, removeItem }}>
+    <CartContext.Provider
+      value={{ cart, setCart, addItem, removeItem, clearCart: clear }}
+    >
       {children}
     </CartContext.Provider>
   );

@@ -2,22 +2,21 @@ import React, { useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
-import { getProduct, getProductImage } from "../../services/ProductService";
+import { getProduct } from "../../services/ProductService";
 import { Badge, Button, Card, Col, Container, Row } from "react-bootstrap";
 import ShowHtml from "../../components/ShowHtml";
 import defaultProductImage from "../../assets/default_product_image.jpg";
 import CartContext from "../../context/CartContext";
 import { toast } from "react-toastify";
+import { getProductImageUrl } from "../../services/HelperService";
 
 const ProductView = () => {
   const { cart, addItem } = useContext(CartContext);
   const [product, setProduct] = useState(null);
-  const [productImage, setProductImage] = useState(undefined);
   const { productId } = useParams();
 
   useEffect(() => {
     loadProduct(productId);
-    getProductImageFromServer();
   }, []);
 
   const loadProduct = (productId) => {
@@ -33,11 +32,6 @@ const ProductView = () => {
     });
   };
 
-  const getProductImageFromServer = async () => {
-    // api call
-    setProductImage(await getProductImage(productId));
-  };
-
   const productView = () => {
     return (
       <Container className="py-4">
@@ -50,7 +44,7 @@ const ProductView = () => {
                     <Col>
                       <img
                         style={{ width: "500px" }}
-                        src={productImage}
+                        src={getProductImageUrl(product.productId)}
                         alt={product.title}
                         onError={(event) => {
                           event.currentTarget.setAttribute(

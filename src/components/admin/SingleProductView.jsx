@@ -32,7 +32,7 @@ const SingleProductView = ({
   };
 
   // deleteProduct
-  const handleDeleteProduct = () => {
+  const handleDeleteProduct = (productId) => {
     // sweet alert:
     Swal.fire({
       title: "Are you sure?",
@@ -51,7 +51,7 @@ const SingleProductView = ({
             // Swal.fire("Deleted!", "Product has been deleted.", "success");
             toast.success("Product Deleted");
 
-            updateProductList(product.productId);
+            updateProductList(productId);
           })
           .catch((error) => {
             console.log(error);

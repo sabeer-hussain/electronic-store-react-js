@@ -1,6 +1,6 @@
-import { getTokenFromLocalStorage } from "../auth/HelperAuth";
+// import { getTokenFromLocalStorage } from "../auth/HelperAuth";
 import { privateAxios } from "./AxiosService";
-import { BASE_URL } from "./HelperService";
+// import { BASE_URL } from "./HelperService";
 
 // product related api calls
 
@@ -55,6 +55,7 @@ export const getAllLiveProducts = (
     .then((response) => response.data);
 };
 
+/*
 // serve product image
 export const getProductImage = async (productId) => {
   const jwtToken = getTokenFromLocalStorage();
@@ -84,6 +85,7 @@ const getBase64Image = async (res) => {
   });
   return reader.result;
 };
+*/
 
 // delete the product
 export const deleteProduct = (productId) => {

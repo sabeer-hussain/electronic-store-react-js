@@ -3,6 +3,7 @@ import { getAllOrders, updateOrder } from "../../services/OrderService";
 import {
   ADMIN_ORDER_PAGE_SIZE,
   formatDate,
+  getProductImageUrl,
 } from "../../services/HelperService";
 import {
   Badge,
@@ -17,7 +18,6 @@ import {
   Table,
 } from "react-bootstrap";
 import SingleOrderView from "../../components/SingleOrderView";
-import { getProductImage } from "../../services/ProductService";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { toast } from "react-toastify";
 
@@ -25,7 +25,6 @@ const AdminOrders = () => {
   const [ordersData, setOrdersData] = useState(undefined);
   const [selectedOrder, setSelectedOrder] = useState(undefined);
   const [currentPage, setCurrentPage] = useState(0);
-  const [orderItemImages, setOrderItemImages] = useState([]);
 
   // const [fakeOrders, setFakeOrders] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
@@ -48,29 +47,11 @@ const AdminOrders = () => {
     }
   }, [currentPage]);
 
-  const getProductImages = async (order) => {
-    const orderItems = order.orderItems;
-    const productImages = [];
-    for (var i = 0; i < orderItems.length; i++) {
-      const productId = orderItems[i].product.productId;
-      const productImage = await getProductImageFromServer(productId);
-      productImages.push(productImage);
-    }
-    setOrderItemImages([...productImages]);
-  };
-
-  const getProductImageFromServer = async (productId) => {
-    // api call
-    const productImage = await getProductImage(productId);
-    return productImage;
-  };
-
   const openViewOrderModal = (event, order) => {
     // console.log("view order button clicked");
     // console.log(event);
     // console.log(order);
 
-    getProductImages(order);
     setSelectedOrder({ ...order });
     handleShow();
   };
@@ -129,7 +110,7 @@ const AdminOrders = () => {
             <Modal.Body>
               <Row>
                 <Col>
-                  <b>OrderId: </b>
+                  <b>Order Id: </b>
                   {selectedOrder.orderId}
                 </Col>
                 <Col>
@@ -212,7 +193,9 @@ const AdminOrders = () => {
                               <Col md={1} className="d-flex align-items-center">
                                 <img
                                   style={{ width: "40px" }}
-                                  src={orderItemImages[index]}
+                                  src={getProductImageUrl(
+                                    item.product.productId
+                                  )}
                                   alt=""
                                 />
                               </Col>

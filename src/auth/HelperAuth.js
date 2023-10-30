@@ -1,4 +1,5 @@
 // data : save localStorage
+
 export const doLoginInLocalStorage = (data) => {
   localStorage.setItem("userData", JSON.stringify(data));
   // next();
@@ -55,7 +56,9 @@ export const isAdminUser = () => {
   }
 };
 
-// data : remove : logout
+// data : remove: logout
 export const doLogoutFromLocalStorage = () => {
   localStorage.removeItem("userData");
 };
+
+// add other helper methods
