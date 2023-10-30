@@ -52,7 +52,7 @@ const AddCategory = () => {
       })
       .catch((error) => {
         console.log(error);
-        toast.success("Error in adding category !!");
+        toast.error("Error in adding category !!");
       })
       .finally(() => {
         setLoading(false);

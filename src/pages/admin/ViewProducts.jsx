@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import {
   getAllProducts,
-  getProductImage,
   searchProducts,
   updateCategoryOfProduct,
   updateProduct,
@@ -9,7 +8,10 @@ import {
 } from "../../services/ProductService";
 import { toast } from "react-toastify";
 import SingleProductView from "../../components/admin/SingleProductView";
-import { PRODUCT_PAGE_SIZE } from "../../services/HelperService";
+import {
+  getProductImageUrl,
+  PRODUCT_PAGE_SIZE,
+} from "../../services/HelperService";
 import {
   Card,
   Container,
@@ -37,9 +39,8 @@ const ViewProducts = () => {
   const [previousProducts, setPreviousProducts] = useState(undefined);
   const [products, setProducts] = useState(undefined);
   const [currentProduct, setCurrentProduct] = useState(undefined);
-  const [productImage, setProductImage] = useState(undefined);
   // for rich text editor
-  const editorRef = useRef(null);
+  const editorRef = useRef();
   const [categories, setCategories] = useState(undefined);
   const [imageUpdate, setImageUpdate] = useState({
     image: undefined,
@@ -82,12 +83,6 @@ const ViewProducts = () => {
   }, []);
 
   useEffect(() => {
-    if (currentProduct) {
-      getProductImageFromServer();
-    }
-  }, [currentProduct]);
-
-  useEffect(() => {
     getCategories(0, 1000)
       .then((data) => {
         console.log(data);
@@ -117,11 +112,6 @@ const ViewProducts = () => {
         console.log(error);
         toast.error("Error in loading products");
       });
-  };
-
-  const getProductImageFromServer = async () => {
-    // api call
-    setProductImage(await getProductImage(currentProduct.productId));
   };
 
   // handle update product form
@@ -305,7 +295,7 @@ const ViewProducts = () => {
                       }}
                       src={
                         currentProduct.productImageName
-                          ? productImage
+                          ? getProductImageUrl(currentProduct.productId)
                           : defaultImage
                       }
                       alt=""
@@ -383,7 +373,7 @@ const ViewProducts = () => {
               <Button variant="secondary" onClick={closeProductViewModal}>
                 Close
               </Button>
-              <Button variant="primary" onClick={openProductViewModal}>
+              <Button variant="primary" onClick={closeProductViewModal}>
                 Save Changes
               </Button>
             </Modal.Footer>
@@ -429,6 +419,18 @@ const ViewProducts = () => {
                 {/* product description */}
                 <Form.Group className="mt-3">
                   <Form.Label>Product Description</Form.Label>
+                  {/* <Form.Control
+                    as={"textarea"}
+                    rows={6}
+                    placeholder="Enter here"
+                    onChange={(event) =>
+                      setProduct({
+                        ...product,
+                        description: event.target.value,
+                      })
+                    }
+                    value={product.description}
+                  /> */}
                   {/* using tinymce rich text editor */}
                   <Editor
                     apiKey=""
@@ -570,7 +572,7 @@ const ViewProducts = () => {
                       src={
                         imageUpdate.imagePreview
                           ? imageUpdate.imagePreview
-                          : productImage
+                          : getProductImageUrl(currentProduct.productId)
                       }
                       alt=""
                       className="img-fluid"
@@ -662,7 +664,7 @@ const ViewProducts = () => {
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Error in serching the products", {
+        toast.error("Error in searching the products", {
           position: "top-right",
         });
       });
@@ -714,18 +716,16 @@ const ViewProducts = () => {
               </tr>
             </thead>
             <tbody>
-              {products.content.map((product, index) => {
-                return (
-                  <SingleProductView
-                    key={product.productId}
-                    index={index}
-                    product={product}
-                    updateProductList={updateProductList}
-                    openProductViewModal={openProductViewModal}
-                    openEditProductModal={openEditProductModal}
-                  />
-                );
-              })}
+              {products.content.map((product, index) => (
+                <SingleProductView
+                  key={product.productId}
+                  index={index}
+                  product={product}
+                  updateProductList={updateProductList}
+                  openProductViewModal={openProductViewModal}
+                  openEditProductModal={openEditProductModal}
+                />
+              ))}
             </tbody>
           </Table>
           <Container className="d-flex justify-content-end">

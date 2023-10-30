@@ -35,7 +35,7 @@ const AddProduct = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState("none");
 
   // for rich text editor
-  const editorRef = useRef(null);
+  const editorRef = useRef();
 
   useEffect(() => {
     getCategories(0, 1000)
@@ -91,7 +91,7 @@ const AddProduct = () => {
     setSelectedCategoryId("none");
   };
 
-  // handle add product form
+  // handle/submit add product form
   const submitAddProductForm = (event) => {
     event.preventDefault();
 

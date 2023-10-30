@@ -104,7 +104,7 @@ const Login = () => {
       .catch((error) => {
         // error handler
         console.log(error);
-        toast.error(error.response.data.message);
+        toast.error(error.response && error.response.data.message);
         setError({
           isError: true,
           errorData: error,
@@ -215,8 +215,9 @@ const Login = () => {
       </Container>
     );
   };
+
   return (
-    <Base title="Electro Store / Login" description="Login Here">
+    <Base title="Electro Store / Login" description="Login Here" description={null}>
       {loginForm()}
     </Base>
   );

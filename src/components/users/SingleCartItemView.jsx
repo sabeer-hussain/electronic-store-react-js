@@ -1,22 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
-import { getProductImage } from "../../services/ProductService";
+import { getProductImageUrl } from "../../services/HelperService";
 import defaultProductImage from "../../assets/default_product_image.jpg";
 import CartContext from "../../context/CartContext";
 import { toast } from "react-toastify";
 
 const SingleCartItemView = ({ item }) => {
-  const { cart, setCart, addItem, removeItem } = useContext(CartContext);
-  const [productImage, setProductImage] = useState(undefined);
-
-  const getProductImageFromServer = async () => {
-    // api call
-    setProductImage(await getProductImage(item.product.productId));
-  };
-
-  useEffect(() => {
-    getProductImageFromServer();
-  }, []);
+  const { cart, setCart, addItem, removeItem, clearCart } =
+    useContext(CartContext);
 
   return (
     <Card className="shadow-sm mb-3">
@@ -28,7 +19,7 @@ const SingleCartItemView = ({ item }) => {
           >
             <img
               style={{ width: "50px", height: "50px", objectFit: "contain" }}
-              src={productImage}
+              src={getProductImageUrl(item.product.productId)}
               alt=""
               onError={(event) => {
                 event.currentTarget.setAttribute("src", defaultProductImage);

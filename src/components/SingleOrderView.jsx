@@ -8,7 +8,7 @@ const SingleOrderView = ({ order, openViewOrderModal, openEditOrderModal }) => {
       <Card.Body>
         <Row>
           <Col>
-            <b>OrderId: </b>
+            <b>Order Id: </b>
             {order.orderId}
           </Col>
           <Col>
@@ -81,7 +81,7 @@ const SingleOrderView = ({ order, openViewOrderModal, openEditOrderModal }) => {
 
           {!openEditOrderModal && order.paymentStatus === "NOT_PAID" && (
             <Button
-              onClick={(event) => openEditOrderModal(event, order)}
+              onClick={(event) => {}}
               variant="success"
               size="sm"
               className="me-2"
@@ -90,7 +90,11 @@ const SingleOrderView = ({ order, openViewOrderModal, openEditOrderModal }) => {
             </Button>
           )}
 
-          <Button variant="info" size="sm" onClick={(event) => {}}>
+          <Button
+            variant="info"
+            size="sm"
+            onClick={(event) => openViewOrderModal(event, order)}
+          >
             Order Details
           </Button>
         </Container>

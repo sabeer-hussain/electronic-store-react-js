@@ -32,7 +32,8 @@ export const formatDate = (timeInLongs) => {
   };
   // return date.toLocaleDateString("hi-IN", options);
   // return date.toLocaleDateString("ta-IN", options);
-  return date.toLocaleDateString("en-US", options);
+  // return date.toLocaleDateString("en-US", options);
+  // return date.toLocaleString("en-US", options);
   */
 
   return date.toLocaleString();

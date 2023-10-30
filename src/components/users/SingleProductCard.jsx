@@ -1,30 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Badge, Button, Card, Container } from "react-bootstrap";
 import defaultProductImage from "../../assets/default_product_image.jpg";
-import { getProductImage } from "../../services/ProductService";
+import { getProductImageUrl } from "../../services/HelperService";
 import "./SingleProductCard.css";
 import { Link } from "react-router-dom";
 
 const SingleProductCard = ({ product }) => {
-  const [productImage, setProductImage] = useState(undefined);
-
-  useEffect(() => {
-    if (product) {
-      getProductImageFromServer();
-    }
-  }, [product]);
-
-  const getProductImageFromServer = async () => {
-    // api call
-    setProductImage(await getProductImage(product.productId));
-  };
-
   return (
     <Card className="m-1 shadow-sm">
       <Card.Body>
         <Container className="text-center">
           <img
-            src={productImage}
+            src={getProductImageUrl(product.productId)}
             alt={product.title}
             onError={(event) => {
               event.currentTarget.setAttribute("src", defaultProductImage);

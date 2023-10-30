@@ -1,38 +1,69 @@
-import { Button } from "react-bootstrap";
+import { useState } from "react";
 import Base from "../components/Base";
-import { toast } from "react-toastify";
-import axios from "axios";
+import {
+  contactForm,
+  infoWithImageInLeftSection,
+  infoWithImageInRightSection,
+  trendingProducts,
+} from "./HomePageComponents";
 
 function Index() {
-  const showSuccessToast = () => {
-    // toast("Success");
-    toast.success("This is success message !!");
-    // toast.success("This is success message !!", {
-    //   position: "bottom-center",
-    //   theme: "dark",
-    // });
-
-    toast.error("This is error message !!");
-    toast.warning("This is warning message !!");
-  };
-
-  const getDataFromServer = () => {
-    toast.info("Getting data from server");
-    const token =
-      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtc2FiZWVyaHVzc2FpbjAwN0BnbWFpbC5jb20iLCJpYXQiOjE2OTYxNTA0MjAsImV4cCI6MTY5NjE2ODQyMH0.njlyU26NNyzhnuMpo_KQVGiTRD22H18cftm4oGN4uMgtIyR-K9EwvHqEbMfWJco33KqMcLyRFqHl1ITcdabuyQ";
-    const header = `Authorization: Bearer ${token}`;
-    axios
-      // .get("https://jsonplaceholder.typicode.com/posts")
-      .get("http://localhost:9090/users", { headers: header })
-      .then((response) => {
-        console.log(response.data);
-        toast.success("request done");
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("something went wrong");
-      });
-  };
+  const [products, setProducts] = useState([
+    {
+      addedDate: "2023-10-28T13:52:58.441Z",
+      category: {
+        categoryId: "string",
+        coverImage: "string",
+        description: "string",
+        title: "Techie Sabeer",
+      },
+      description: "string",
+      discountedPrice: 5000,
+      live: true,
+      price: 6000,
+      productId: "string",
+      productImageName: "string",
+      quantity: 0,
+      stock: true,
+      title: "Product title",
+    },
+    {
+      addedDate: "2023-10-28T13:52:58.441Z",
+      category: {
+        categoryId: "string",
+        coverImage: "string",
+        description: "string",
+        title: "Techie Sabeer",
+      },
+      description: "string",
+      discountedPrice: 5000,
+      live: true,
+      price: 6000,
+      productId: "string",
+      productImageName: "string",
+      quantity: 0,
+      stock: true,
+      title: "Product title",
+    },
+    {
+      addedDate: "2023-10-28T13:52:58.441Z",
+      category: {
+        categoryId: "string",
+        coverImage: "string",
+        description: "string",
+        title: "Techie Sabeer",
+      },
+      description: "string",
+      discountedPrice: 5000,
+      live: true,
+      price: 6000,
+      productId: "string",
+      productImageName: "string",
+      quantity: 0,
+      stock: true,
+      title: "Product title",
+    },
+  ]);
 
   return (
     <Base
@@ -43,22 +74,35 @@ function Index() {
       buttonEnabled={true}
       buttonText="Start Shopping"
       buttonType="primary"
+      buttonLink="/store"
     >
-      <h1>Working on home page</h1>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut non dolorum
-        error? Veritatis cum magni, minima doloribus ipsa inventore numquam
-        dignissimos tenetur velit temporibus incidunt, adipisci fuga illum
-        dolorem iusto dolor architecto obcaecati laudantium error! Earum
-        voluptas quis repudiandae recusandae! Cum quisquam vero, quasi deleniti
-        provident ea totam pariatur odit.
-      </p>
-      <Button variant="success" onClick={showSuccessToast}>
-        Toastify Success
-      </Button>
-      <Button variant="primary" onClick={getDataFromServer}>
-        Get data from Fake API
-      </Button>
+      <div className="my-4">{trendingProducts(products)}</div>
+
+      <div style={{ margin: "100px 0px" }}>
+        {infoWithImageInRightSection(
+          "https://random.imagecdn.app/500/150",
+          "Lorem ipsum dolor sit amet.",
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius quia voluptatum ea nisi quibusdam expedita placeat facere voluptate est quidem."
+        )}
+      </div>
+
+      <div style={{ margin: "100px 0px" }}>
+        {infoWithImageInLeftSection(
+          "https://random.imagecdn.app/500/150",
+          "Lorem ipsum dolor sit amet.",
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius quia voluptatum ea nisi quibusdam expedita placeat facere voluptate est quidem."
+        )}
+      </div>
+
+      <div className="my-4">{contactForm()}</div>
+
+      <div style={{ margin: "100px 0px" }}>
+        {infoWithImageInRightSection(
+          "https://random.imagecdn.app/500/150",
+          "Lorem ipsum dolor sit amet.",
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius quia voluptatum ea nisi quibusdam expedita placeat facere voluptate est quidem."
+        )}
+      </div>
     </Base>
   );
 }

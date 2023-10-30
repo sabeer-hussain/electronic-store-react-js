@@ -51,10 +51,10 @@ const UserProvider = ({ children }) => {
         // you can remove setUserData function
         setUserData: setUserData,
         isLogin: isLogin,
+        isAdminUser: isAdminUser,
         // you can remove setIsLogin function
         setIsLogin: setIsLogin,
         login: doLogin,
-        isAdminUser: isAdminUser,
         logout: doLogout,
       }}
     >

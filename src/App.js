@@ -9,7 +9,7 @@ import Profile from "./pages/users/Profile";
 import AboutUser from "./pages/users/AboutUser";
 import CustomNavbar from "./components/Navbar";
 import Contact from "./pages/Contact";
-import { Flip, ToastContainer, Zoom } from "react-toastify";
+import { Flip, ToastContainer, Zoom, toast } from "react-toastify";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/users/Home";
@@ -27,8 +27,12 @@ import StorePage from "./pages/users/StorePage";
 import ProductView from "./pages/users/ProductView";
 import CategoryStorePage from "./pages/users/CategoryStorePage";
 import CartProvider from "./context/CartProvider";
+import Loading from "./components/Loading";
+import useLoader from "./hooks/useLoader";
 
 function App() {
+  const loading = useLoader();
+
   return (
     <UserProvider>
       <CartProvider>
@@ -42,6 +46,7 @@ function App() {
             // transition={Flip}
           />
           <CustomNavbar />
+          <Loading show={loading} />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
