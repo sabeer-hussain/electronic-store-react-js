@@ -1,5 +1,6 @@
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-import SingleProductCard from "../components/users/SingleProductCard";
+import TrendingProductCard from "../components/TrendingProductCard";
+// import SingleProductCard from "../components/users/SingleProductCard";
 
 export const trendingProducts = (products) => {
   return (
@@ -8,7 +9,7 @@ export const trendingProducts = (products) => {
         <h3 className="text-center">Trending Products List</h3>
         {products.map((product) => (
           <Col md={4}>
-            <SingleProductCard product={product} />
+            <TrendingProductCard product={product} />
           </Col>
         ))}
       </Row>
